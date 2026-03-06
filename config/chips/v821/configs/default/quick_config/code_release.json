@@ -1,0 +1,25 @@
+{
+    "sync_all_configs_for_release": {
+        "desc": "sync defconfig for code release",
+        "tag": "tools",
+        "force_config": true,
+        "kernel": [
+            "CONFIG_AW_BSP=y"
+        ],
+        "openwrt": [
+            "CONFIG_MODULES=y"
+        ],
+        "uboot": [
+            "CONFIG_RISCV=y"
+        ],
+        "uboot_nor": [
+            "CONFIG_RISCV=y"
+        ],
+        "uboot_efex": [
+            "CONFIG_RISCV=y"
+        ],
+        "rtos": [
+            "CONFIG_OS=y"
+        ]
+    }
+}

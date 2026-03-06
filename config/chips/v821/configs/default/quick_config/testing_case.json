@@ -1,0 +1,19 @@
+{
+    "scenario_testing_dual_2M": {
+		"desc": "set v821 scenario testing config with dual gc2083",
+		"depends": [
+			"memory_optimization",
+			"dual_gc2083_sensor",
+			"de_resize_config"
+		]
+	},
+    "scenario_testing_dual_2M_xr819s": {
+		"desc": "set v821 xr819s scenario testing config with dual gc2083",
+		"depends": [
+			"memory_optimization",
+			"dual_gc2083_sensor",
+			"v821_xr819s_wlan",
+			"de_resize_config"
+		]
+	}
+}

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+local last_selected_chip_file="${TINA_TOPDIR}/.buildconfig_chip_alter"
+
+if [ -f "$last_selected_chip_file" ]; then
+  CHIP_IMG_NAME=$(cat "$last_selected_chip_file" | tr '[:upper:]' '[:lower:]')
+  IMG_NAME="${CHIP_IMG_NAME:0:10}${IMG_NAME:4}"
+fi

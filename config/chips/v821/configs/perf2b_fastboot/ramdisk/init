@@ -1,0 +1,73 @@
+#!/bin/sh
+
+/bin/mount -t proc proc /proc
+/bin/mount -t sysfs sysfs /sys
+/bin/mount -t tmpfs tmpfs /tmp
+mount -t devtmpfs none /dev
+
+exec < /dev/console > /dev/console 2>&1
+demo_video_in -n 40 -s0 1280x720 -f0 0
+
+ROOT_DEVICE=/dev/mtdblock7
+INIT_EXEC=/files/init
+CONSOLE_DEVICE=ttyS0
+
+for parm in $(cat /proc/cmdline); do
+	case $parm in
+	root=*)
+		ROOT_DEVICE=`echo $parm | awk -F\= '{print $2}'`
+		;;
+	console=*)
+		CONSOLE_DEVICE=`echo $parm | awk -F\= '{print $2}' | awk -F\, '{print $1}'`
+		;;
+	init=*)
+		INIT_EXEC=`echo $parm | awk -F\= '{print $2}'`
+		;;
+	esac
+done
+
+echo [$0]: RootDevice is \"$ROOT_DEVICE\" , GPT_SUPPORT=$GPT_SUPPORT, Root is \"$INIT_EXEC\" > /dev/kmsg
+
+# $1: the name of block device
+wait_for_ready()
+{
+	CNT=2
+	while true; do
+		if [ -b $1 ]; then
+			return 0
+		fi
+
+		echo [$0]: Wait $1 ready ...
+
+		CNT=`expr $CNT - 1`
+		if [ $CNT -eq 0 ]; then
+			echo [$0]: $1 is not available!
+			return 1
+		fi
+		sleep 1
+	done
+}
+
+load_spinor()
+{
+	echo [$0]: Try to load SpiNor ... > /dev/kmsg
+
+	wait_for_ready $1
+	if [ $? -eq 0 ]; then
+		mount -t squashfs $1 /mnt
+	fi
+}
+
+fgrep spif /proc/sys/kernel/deferred_device && \
+    echo 44f00000.spif > /proc/sys/kernel/deferred_device;
+
+load_spinor $ROOT_DEVICE
+
+[ -x /mnt/$INIT_EXEC ] && {
+	umount /dev
+	umount /sys
+	umount /proc
+	mount --move /tmp /mnt/tmp
+	exec switch_root /mnt /$INIT_EXEC
+}
+/sbin/getty -L $CONSOLE_DEVICE 1500000 vt100 -n -l /bin/ash

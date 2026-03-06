@@ -1,0 +1,7 @@
+#!/bin/bash
+
+[ -e ${LICHEE_CHIP_CONFIG_DIR}/configs/${PACK_BOARD}/ramdisk_list.json ] && {
+	local python_path=${LICHEE_TOP_DIR}/prebuilt/hostbuilt/python3.8/bin/python3
+	${python_path} ${LICHEE_TOP_DIR}/tools/quick/auto_gen_ramdisk ${LICHEE_TOP_DIR}/.buildconfig \
+		--config ${LICHEE_CHIP_CONFIG_DIR}/configs/${PACK_BOARD}/ramdisk_list.json || exit 1
+}

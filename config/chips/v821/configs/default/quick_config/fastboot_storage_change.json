@@ -1,0 +1,435 @@
+{
+	"change_to_emmc": {
+		"desc": "Set device storage to eMMC",
+		"tag": "storage",
+		"configs": {
+			"LICHEE_FLASH": "mmc"
+		},
+		"finish_note": [
+			"change flash to emmc successful.\n",
+			"Please run those command\n",
+			"source build/envsetup.sh",
+			"lunch",
+			"to apply this setting"
+		],
+		"sysconfig": {
+			"target": {
+				"storage_type": 2
+			}
+		},
+		"board.dts": {
+			"set_property": {
+				"sdc0": {
+					"bus-width": "<4>",
+					"non-removable": null,
+					"cap-mmc-highspeed": null,
+					"mmc-bootpart-noacc": null,
+					"mmc-ddr-3_3v": null,
+					"no-sdio": null,
+					"sunxi-power-save-mode": null,
+					"sunxi-dis-signal-vol-sw": null,
+					"max-frequency": "<50000000>",
+					"ctl-spec-caps": "<0x8>",
+					"no-sd": null,
+					"status": "\"okay\""
+				},
+				"isp_param@0": {
+					"partition_name": "\"/dev/mmcblk0p8\""
+				}
+			},
+			"del_property": {
+				"sdc0": {
+					"cd-gpios": null,
+					"cap-sd-highspeed": null,
+					"cd-used-24M": null,
+					"deferred-device": null,
+					"no-mmc": null
+				}
+			},
+			"bootargs": {
+				"root": "/dev/mmcblk0p7",
+				"selinux": "0",
+				"gpt": "1",
+				"mbr_offset": "1032192"
+			}
+		},
+		"env": [
+			{
+				"name": "rootfstype",
+				"val": "squashfs",
+				"method": "add"
+			}
+		],
+		"partition": [
+			{
+				"name": "mbr",
+				"size": "64"
+			},
+			{
+				"name": "env",
+				"size": "512"
+			},
+			{
+				"name": "env-redund",
+				"size": "512"
+			}
+		],
+		"uboot-board.dts": {
+			"set_property": {
+				"target": {
+					"storage_type": "<1>"
+				}
+			}
+		},
+		"kernel": [
+			/*"lock_defconfig.fragment", "ftrace_defconfig.fragment",*/
+			"# CONFIG_AW_MTD is not set",
+			"# CONFIG_AW_MTD_SUNXI_PARTS is not set",
+			"# CONFIG_AW_MTD_SPI_NOR_5_4 is not set",
+			"# CONFIG_MTD_SPI_NOR_USE_4K_SECTORS is not set",
+			"# CONFIG_SPIF_SUNXI is not set",
+			"# CONFIG_AW_MTD_SPINAND is not set",
+			"# CONFIG_AW_SPI_NG is not set",
+			"#CONFIG_AW_SPI_NG_ATOMIC_XFER is not set",
+			"# CONFIG_AW_SPI_SLAVETEST is not set",
+			"# CONFIG_AW_SPI_CAMERATEST is not set",
+			"# CONFIG_SPI is not set",
+			"# CONFIG_MTD_UBI is not set",
+			"# CONFIG_JFFS2_FS is not set",
+			"# CONFIG_UBIFS_FS is not set",
+			"CONFIG_EXT4_FS=y",
+			"# CONFIG_BLK_DEV_INITRD is not set",
+			"# CONFIG_AW_PARALLEL_RAMDISK is not set",
+			"# CONFIG_AW_SPIF_DELAYINIT is not set",
+			"# CONFIG_AW_ROOTFS_READAHEAD is not set"
+		],
+		"openwrt": [
+			"# CONFIG_PACKAGE_mtd-utils is not set",
+			"# CONFIG_SUNXI_SMALL_STORAGE_OTA is not set",
+			"CONFIG_PACKAGE_e2fsprogs=y"
+		],
+		"rtos": [
+			"# CONFIG_PM_LOAD_STORAGE_TYPE_SPINOR is not set",
+			"CONFIG_PM_LOAD_STORAGE_TYPE_MMC=y",
+			"# CONFIG_PM_LOAD_STORAGE_TYPE_SPINAND is not set",
+			"CONFIG_COMPONENTS_AW_FLASH_READ_EMMC=y",
+			"# CONFIG_COMPONENTS_AW_FLASH_READ_SPINOR is not set",
+			"# CONFIG_COMPONENTS_AW_FLASH_READ_SPINOR is not set",
+			"CONFIG_COMPONENTS_AW_FLASH_READ_EMMC=y",
+			"CONFIG_COMPONENTS_AW_FLASH_GPT_OFFSET=40960",
+			"CONFIG_COMPONENTS_AW_FLASH_BOOTPKG_OFFSET=32800",
+			"# CONFIG_WAIT_SPIF_CONTROLLER is not set",
+			"# CONFIG_PRELOAD_ROOTFS is not set"
+		],
+		"rtos_sysconfig": {
+			"uart2": {
+				"uart_tx": "port:PL04<4><1><default><default>",
+				"uart_rx": "port:PL05<4><1><default><default>"
+			}
+		}
+	},
+	"change_to_sdcard": {
+		"desc": "Set device storage to SD Card",
+		"tag": "storage",
+		"depends": [
+			"change_to_emmc"
+		],
+		"sysconfig": {
+			"target": {
+				"storage_type": 0
+			}
+		},
+		"board.dts": {
+			"set_property": {
+				"sdc0": {
+					"no-mmc": null
+				}
+			},
+			"del_property": {
+				"sdc0": {
+					"no-sd": null
+				}
+			}
+		}
+	},
+	"del_all_sys_partition_for_nand": {
+		"desc": "(internal) delete all sys partition for change to nand",
+		"tag": "storage",
+		"internal": true,
+		"partition": [
+			{
+				"name": "boot",
+				"del": true
+			},
+			{
+				"name": "boot_backup",
+				"del": true
+			},
+			{
+				"name": "riscv0",
+				"del": true
+			},
+			{
+				"name": "riscv0_bak",
+				"del": true
+			},
+			{
+				"name": "isp_param_bak",
+				"del": true
+			},
+			{
+				"name": "isp_param",
+				"del": true
+			},
+			{
+				"name": "boot-resource",
+				"del": true
+			},
+			{
+				"name": "env",
+				"del": true
+			},
+			{
+				"name": "env-redund",
+				"del": true
+			},
+			{
+				"name": "private",
+				"del": true
+			},
+			{
+				"name": "rootfs",
+				"del": true
+			},
+			{
+				"name": "rootfs_data",
+				"del": true
+			},
+			{
+				"name": "UDISK",
+				"del": true
+			}
+		]
+	},
+	"change_to_nand_base": {
+		"desc": "(internal) Basic config for fastboot SPI NAND Device (Please use change_to_nand for NAND Device)",
+		"internal": true,
+		"depends": [
+			"disable_spif_parallel_ramdisk",
+			"disable_spif_rootfs_readahead",
+			"del_all_sys_partition_for_nand"
+		],
+		"finish_note": [
+			"change flash to emmc successful.\n",
+			"Please run those command\n",
+			"source build/envsetup.sh",
+			"lunch",
+			"to apply this setting"
+		],
+		"configs": {
+			"LICHEE_FLASH": "nand"
+		},
+		"sysconfig": {
+			"target": {
+				"storage_type": 5
+			}
+		},
+		"BoardConfig": {
+			"LICHEE_EFEX_BIN_NAME": "efex_nandfastboot",
+			"LICHEE_REDUNDANT_ENV_SIZE": "0x20000",
+			"LICHEE_BOOT0_BIN_NAME": "nandfastboot"
+		},
+		"bootpkg": {
+			"pmboot": "pmboot_nand.fex"
+		},
+		"env": [
+			{
+				"name": "nand_root",
+				"val": "/dev/ubiblock0_5",
+				"method": "add"
+			},
+			{
+				"name": "rootfstype",
+				"val": "squashfs",
+				"method": "add"
+			}
+		],
+		"uboot-board.dts": {
+			"set_property": {
+				"target": {
+					"storage_type": "<5>"
+				}
+			}
+		},
+		"board.dts": {
+			"bootargs": {
+				"ubi.mtd": "sys",
+				"rootfstype": "squashfs",
+				"gpt": 1,
+				"boot_type": 5,
+				"androidboot.boot_type": 5,
+				"mbr_offset": 1032192,
+				"aw-ubi-spinand.ubootblks": 24,
+				"ubi.block": "0,rootfs"
+			},
+			"set_property": {
+				"spi0": {
+					"status": "\"okay\""
+				},
+				"spi_board0": {
+					"status": "\"disabled\""
+				},
+				"spif0": {
+					"status": "\"disabled\""
+				},
+				"spif-nor": {
+					"status": "\"disabled\""
+				},
+				"spi-nand@0": {
+					"status": "\"okay\""
+				}
+			}
+		},
+		"partition": [
+			{
+				"name": "boot",
+				"size": 18600,
+				"downloadfile": "\"boot.fex\"",
+				"user_type": "0x8000"
+			},
+			{
+				"name": "boot_backup",
+				"size": 18600,
+				"downloadfile": "\"boot.fex\"",
+				"user_type": "0x8000"
+			},
+			{
+				"name": "riscv0",
+				"size": 4096,
+				"downloadfile": "\"amp_rv0.fex\"",
+				"user_type": "0x8000"
+			},
+			{
+				"name": "riscv0_bak",
+				"size": 4096,
+				"downloadfile": "\"amp_rv0.fex\"",
+				"user_type": "0x8000"
+			},
+			{
+				"name": "isp_param",
+				"size": 512,
+				"user_type": "0x8000"
+			},
+			{
+				"name": "isp_param_bak",
+				"size": 512,
+				"user_type": "0x8000"
+			},
+			{
+				"name": "boot-resource",
+				"size": 10240,
+				"downloadfile": "\"boot-resource.fex\"",
+				"user_type": "0x8000"
+			},
+			{
+				"name": "private",
+				"size": 1024,
+				"ro": 0,
+				"user_type": "0x8000"
+			},
+			{
+				"name": "rootfs",
+				"size": 49600,
+				"downloadfile": "\"rootfs.fex\"",
+				"user_type": "0x8000"
+			},
+			{
+				"name": "rootfs_data",
+				"size": 10240,
+				"user_type": "0x8000"
+			},
+			{
+				"name": "UDISK",
+				"user_type": "0x8100"
+			}
+		],
+		"kernel": [
+			"# CONFIG_AW_MTD_SPI_NOR_5_4 is not set",
+			"# CONFIG_SPIF_SUNXI is not set",
+			"# CONFIG_PSTORE is not set",
+			"CONFIG_MTD_UBI_BLOCK=y",
+			"CONFIG_MTD_UBI_BEB_LIMIT=40",
+			"CONFIG_MTD_BLOCK=y",
+			"CONFIG_MTD_CMDLINE_PARTS=y",
+			"CONFIG_AW_MTD_SPINAND=y",
+			"CONFIG_UBIFS_FS=y",
+			"CONFIG_MTD_UBI_GLUEBI=y",
+			"CONFIG_UBIFS_FS_ADVANCED_COMPR=y",
+			"# CONFIG_UBIFS_FS_LZO is not set",
+			"# CONFIG_UBIFS_FS_ZLIB is not set",
+			"# CONFIG_UBIFS_FS_ZSTD is not set",
+			"# CONFIG_JFFS2_FS is not set"
+		],
+		"openwrt": [
+			"# CONFIG_SUNXI_SMALL_STORAGE_OTA is not set",
+			"CONFIG_PACKAGE_e2fsprogs=y",
+			"CONFIG_PACKAGE_mtd-utils=y",
+			"CONFIG_PACKAGE_mtd-utils-mkfs.ubifs=y",
+			"# CONFIG_USE_MKLIBS is not set"
+		],
+		"sync_nand_map": {
+			"ro_parts": [
+				{
+					"name": "boot0",
+					"size": "1024k"
+				},
+				{
+					"name": "uboot",
+					"size": "3072k"
+				},
+				{
+					"name": "secure_storage",
+					"size": "1024k"
+				}
+			]
+		}
+	},
+	"sync_partition_nor_to_bootargs": {
+		"desc": "Sync sys_partition_nor.fex to bootargs (SPI NOR)",
+		"tag": "storage",
+		"partition_nor": [
+			{
+				"name": "mbr"
+			}
+		]
+	},
+	"sync_partition_to_bootargs": {
+		"desc": "Sync sys_partition_nor.fex to bootargs (eMMC/SD Nand)",
+		"tag": "storage",
+		"partition": [
+			{
+				"name": "mbr"
+			}
+		]
+	},
+	"sync_nand_partition_to_bootargs": {
+		"desc": "Sync sys_partition.fex to bootargs (SPI Nand)",
+		"tag": "storage",
+		"sync_nand_map": {
+			"ro_parts": [
+				{
+					"name": "boot0",
+					"size": "1024k"
+				},
+				{
+					"name": "uboot",
+					"size": "3072k"
+				},
+				{
+					"name": "secure_storage",
+					"size": "1024k"
+				}
+			]
+		}
+	}
+}

@@ -1,0 +1,845 @@
+{
+	"default_sensor_sys_config": {
+		"desc": "set one camera of gc1084 sys config for this board",
+		"tag": "camera",
+		"kernel": [
+			"CONFIG_VIN_SENSOR_RESERVE_ADDR=0x81CEE000",
+			"CONFIG_SENSOR_GC1084_MIPI=y",
+			"# CONFIG_SUPPORT_ISP_TDM is not set",
+			"# CONFIG_TDM_ONE_BUFFER is not set",
+			"# CONFIG_SENSOR_GC2083_MIPI is not set",
+			"# CONFIG_SENSOR_SC2336_MIPI is not set",
+			"# CONFIG_SENSOR_SC3336_MIPI is not set",
+			"# CONFIG_SENSOR_GC4663_MIPI is not set",
+			"# CONFIG_SENSOR_F37P_MIPI is not set",
+			"# CONFIG_SENSOR_GC1084_MIPI_USE_SAME_TWI is not set",
+			"# CONFIG_SENSOR_NVP6158C is not set",
+			"# CONFIG_SENSOR_GC05A2_MIPI is not set",
+			"# CONFIG_FRAMEDONE_TWO_BUFFER is not set",
+			"# CONFIG_ACTUATOR is not set",
+			"# CONFIG_ACTUATOR_DW9714 is not set",
+			"# CONFIG_SENSOR_F37P is not set",
+			"# CONFIG_SENSOR_IMX258 is not set",
+			"# CONFIG_SENSOR_OS02G10_DVP is not set",
+			"# CONFIG_RT_MEDIA_DUAL_SENSOR is not set",
+			"# CONFIG_SENSOR_GC2083_ONE_LANE_MIPI is not set",
+			"# CONFIG_TDM_ONE_BUFFER_WITH_TWORX is not set",
+			"# CONFIG_SENSOR_GC2083_SM_VSYNC_MODE is not set",
+			"# CONFIG_SUPPORT_ISP_TDM is not set"
+		],
+		//cp vin driver and sensor to rootfs; see moudule.mk ;load ko see S00mpp
+		"openwrt": [
+			"CONFIG_gc1084=y",
+			"# CONFIG_imx258 is not set",
+			"# CONFIG_gc2053 is not set",
+			"# CONFIG_gc2083 is not set",
+			"# CONFIG_gc4663 is not set",
+			"# CONFIG_f37p is not set",
+			"# CONFIG_sc2336 is not set",
+			"# CONFIG_sc3336 is not set",
+			"# CONFIG_sc200ai is not set",
+			"# CONFIG_bf2257cs is not set"
+		],
+		// rtos configs
+		"rtos": [
+			"CONFIG_ARCH_MEM_LENGTH=0x380000",
+			"CONFIG_RTOS_FW_RESERVED_MEM_ADDR=0x813c4000",
+			"CONFIG_DRIVERS_VIN=y",
+			"# CONFIG_ENABLE_AIISP is not set",
+			"CONFIG_ISP_READ_THRESHOLD=y",
+			"# CONFIG_ISP_FAST_CONVERGENCE is not set",
+			"# CONFIG_ISP_ONLY_HARD_LIGHTADC is not set",
+			"# CONFIG_ISP_HARD_LIGHTADC is not set",
+			"CONFIG_ISP_NUMBER=1",
+			"CONFIG_VIN_WAIT_AMP_INIT=y",
+			"CONFIG_VIN_CONTINUE_INIT_TRY_TIMES=200",
+			"CONFIG_VIN_WAIT_AMP_INIT_SEM_TIMEOUT=3500",
+			"# CONFIG_NOT_FRAME_LOSS is not set",
+			"# CONFIG_VIDEO_SUNXI_VIN_SPECIAL is not set",
+			"CONFIG_ISP_MEMRESERVE_ADDR=0x816a6000",
+			"CONFIG_ISP_MEMRESERVE_LEN=0x65a000",
+			"CONFIG_VIN_USE_SYSCONFIG=y",
+			"# CONFIG_SENSOR_INIT_BEFORE_VIN is not set",
+			"CONFIG_VIN_USE_PM=y",
+			"# CONFIG_SENSOR_GC1054_MIPI is not set",
+			"CONFIG_SENSOR_GC1084_MIPI=y",
+			"# CONFIG_SENSOR_GC1084_8BIT_MIPI is not set",
+			"# CONFIG_SENSOR_GC1084_MIPI_USE_SAME_TWI is not set",
+			"# CONFIG_SENSOR_GC2053_MIPI is not set",
+			"# CONFIG_SENSOR_GC2083_MIPI is not set",
+			"# CONFIG_SENSOR_GC2083_MIPI_USE_1LANE is not set",
+			"# CONFIG_SENSOR_GC4663_MIPI is not set",
+			"# CONFIG_SENSOR_GC05A2_MIPI is not set",
+			"# CONFIG_SENSOR_SC2355_MIPI is not set",
+			"# CONFIG_SENSOR_SC2336_MIPI is not set",
+			"# CONFIG_SENSOR_SC3336_MIPI is not set",
+			"# CONFIG_SENSOR_SC500AI_MIPI is not set",
+			"# CONFIG_SENSOR_SC5336_MIPI is not set",
+			"# CONFIG_SENSOR_TP9950_MIPI is not set",
+			"# CONFIG_SENSOR_TP9953_DVP is not set",
+			"# CONFIG_SENSOR_IMX319_MIPI is not set",
+			"# CONFIG_SENSOR_IMX335_MIPI is not set",
+			"# CONFIG_SENSOR_SC035HGS_MIPI is not set",
+			"# CONFIG_SENSOR_TP2815_MIPI is not set",
+			"# CONFIG_SENSOR_GC0406_MIPI is not set",
+			"# CONFIG_SENSOR_BF2253L_MIPI is not set",
+			"# CONFIG_SENSOR_N5_DVP is not set",
+			"# CONFIG_SENSOR_BF2257CS_MIPI is not set",
+			"# CONFIG_SENSOR_F355P_MIPI is not set",
+			"# CONFIG_SENSOR_F355P_DVP is not set",
+			"# CONFIG_SENSOR_F37P_DVP is not set",
+			"# CONFIG_SENSOR_F37P_MIPI is not set"
+		],
+		// rtos configs
+		"rtos_sysconfig": {
+			"vind/vinc0": {
+				"vinc0_merge_width": "0",
+				"vinc0_merge_height": "0",
+				"vinc0_large_image": "0"
+			},
+			"vind/vinc1": {
+				"vinc1_merge_width": "0",
+				"vinc1_merge_height": "0",
+				"vinc1_large_image": "0"
+			}
+		}
+	},
+	/*****************************one_gc2083_sensor************************************/
+	"one_gc1084_sensor": {
+		"desc": "set one camera of gc1084 online for this board",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_config",
+			"default_sensor_sys_config"
+		]
+	},
+	/*****************************one_sc2336_sensor************************************/
+	"one_sc2336_sensor": {
+		"desc": "set one camera of sc2336 online for this board",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_config",
+			"default_sensor_sys_config"
+		],
+		"board.dts": {
+			"set_property": {
+				//s0vencfg0
+				"s0vencfg0": {
+					"status": "\"okay\"",
+					"res_w": "<1920>",
+					"res_h": "<1080>",
+					"bit_rate": "<1024>",
+					"jpg_w": "<1920>",
+					"jpg_h": "<1080>"
+				},
+				//set sensor name and addr
+				"sensor0": {
+					"sensor0_mname": "\"sc2336_mipi\"",
+					"sensor0_twi_addr": "<0x60>"
+				}
+			}
+		},
+		// enable sensor complile
+		"kernel": [
+			"CONFIG_SENSOR_SC2336_MIPI=y",
+			"# CONFIG_SENSOR_GC1084_MIPI is not set"
+		],
+		// rtos configs
+		"rtos_sysconfig": {
+			"vind/sensor0": {
+				"sensor0_mname": "\"sc2336_mipi\"",
+				"sensor0_twi_addr": "0x60"
+			},
+			"vind/vinc0": {
+				"vinc0_mipi_num": "2"
+			},
+			"vind/vinc4": {
+				"vinc4_mipi_num": "2"
+			}
+		},
+		// rtos configs
+		"rtos": [
+			"# CONFIG_SENSOR_GC1084_MIPI is not set",
+			"CONFIG_SENSOR_SC2336_MIPI=y"
+		]
+	}, //end of one_sc2336_sensor
+	/*****************************one_gc2083_sensor************************************/
+	"one_gc2083_sensor": {
+		"desc": "set one camera of gc2083 online for this board",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_config",
+			"default_sensor_sys_config"
+		],
+		"board.dts": {
+			"set_property": {
+				//s0vencfg0
+				"s0vencfg0": {
+					"status": "\"okay\"",
+					"res_w": "<1920>",
+					"res_h": "<1080>",
+					"bit_rate": "<1024>",
+					"jpg_w": "<1920>",
+					"jpg_h": "<1080>"
+				},
+				//set sensor name and addr
+				"sensor0": {
+					"sensor0_mname": "\"gc2083_mipi\""
+				}
+			}
+		},
+		// enable sensor complile
+		"kernel": [
+			"CONFIG_SENSOR_GC2083_MIPI=y",
+			"# CONFIG_SENSOR_GC1084_MIPI is not set"
+		],
+		// rtos configs
+		"rtos_sysconfig": {
+			"vind/sensor0": {
+				"sensor0_mname": "\"gc2083_mipi\""
+			},
+			"vind/vinc0": {
+				"vinc0_mipi_num": "2"
+			},
+			"vind/vinc4": {
+				"vinc4_mipi_num": "2"
+			}
+		},
+		// rtos configs
+		"rtos": [
+			"# CONFIG_SENSOR_GC1084_MIPI is not set",
+			"CONFIG_SENSOR_GC2083_MIPI=y"
+		]
+	}, //end of one_gc2083_sensor
+	/*****************************dual_gc1084_sensor************************************/
+	"dual_gc1084_sensor": {
+		"desc": "set two camera of gc1084 online for this board",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_sys_config",
+			"default_dual_sensor_config"
+		]
+	},
+	/*****************************dual_gc2083_sensor************************************/
+	"dual_gc2083_sensor": {
+		"desc": "set two camera of gc2083 online for this board",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_sys_config",
+			"default_dual_sensor_config"
+		],
+		"board.dts": {
+			"set_property": {
+				"size_pool": {
+					"reg": "<0 0x82000000 0 0x01E00000>"
+				},
+				"heap_size_pool@0": {
+					"heap-size": "<0x01E00000>",
+					"thrs": "<100>",
+					"sizes": "<0 30720>"
+				},
+				"s0vencfg0": {
+					"status": "\"okay\"",
+					"res_w": "<1920>",
+					"res_h": "<1080>",
+					"bit_rate": "<1024>",
+					"jpg_w": "<1920>",
+					"jpg_h": "<1080>"
+				},
+				"s1vencfg0": {
+					"status": "\"okay\"",
+					"res_w": "<1920>",
+					"res_h": "<1080>",
+					"bit_rate": "<1024>"
+				},
+				"s2vencfg0": {
+					"status": "\"disabled\""
+				},
+				"sensor0": {
+					"sensor0_mname": "\"gc2083_mipi\"",
+					"sensor0_twi_addr": "<0x6e>",
+					"status": "\"okay\""
+				},
+				"sensor1": {
+					"sensor1_mname": "\"gc2083_mipi_2\"",
+					"sensor1_twi_addr": "<0x7e>",
+					"status": "\"okay\""
+				}
+			}
+		},
+		"kernel": [
+			"# CONFIG_SENSOR_GC1084_MIPI is not set",
+			"CONFIG_SENSOR_GC2083_MIPI=y",
+			"CONFIG_SENSOR_GC2083_ONE_LANE_MIPI=y",
+			"CONFIG_TDM_ONE_BUFFER=y",
+			"CONFIG_FRAMEDONE_TWO_BUFFER=y"
+		],
+		// rtos sysconfig
+		"rtos_sysconfig": {
+			"vind/sensor0": {
+				"sensor0_mname": "\"gc2083_mipi\""
+			},
+			"vind/sensor1": {
+				"sensor1_mname": "\"gc2083_mipi_2\"",
+				"sensor1_twi_addr": "0x7e"
+			},
+			"vind/vinc0": {
+				"vinc0_mipi_num": "1"
+			},
+			"vind/vinc1": {
+				"vinc1_mipi_num": "1"
+			}
+		},
+		// rtos configs
+		"rtos": [
+			"CONFIG_ISP_READ_THRESHOLD=y",
+			"# CONFIG_SENSOR_GC1084_MIPI is not set",
+			"# CONFIG_SENSOR_GC1084_MIPI_USE_SAME_TWI is not set",
+			"CONFIG_SENSOR_GC2083_MIPI=y",
+			"CONFIG_SENSOR_GC2083_MIPI_USE_1LANE=y",
+			"CONFIG_TDM_RX_BUF_NUM=1"
+		]
+	}, //end of dual_gc2083_sensor
+	/*****************************dual_gc2083_sensor with tdmonbuf tworx mode***************************/
+	"dual_gc2083_sensor_smvs": {
+		"desc": "set two camera of gc2083 online for this board with tdmonbuf tworx mode",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_sys_config",
+			"default_dual_sensor_config"
+		],
+		"board.dts": {
+			"set_property": {
+				//mem pool
+				"size_pool": {
+					"reg": "<0 0x82000000 0 0x01E00000>"
+				},
+				"heap_size_pool@0": {
+					"heap-size": "<0x01E00000>",
+					"thrs": "<100>",
+					"sizes": "<0 30720>"
+				},
+				//s0vencfg0
+				"s0vencfg0": {
+					"status": "\"okay\"",
+					"res_w": "<1920>",
+					"res_h": "<1080>",
+					"bit_rate": "<1024>",
+					"jpg_w": "<1920>",
+					"jpg_h": "<1080>"
+				},
+				//s1vencfg0
+				"s1vencfg0": {
+					"status": "\"okay\"",
+					"res_w": "<1920>",
+					"res_h": "<1080>",
+					"bit_rate": "<1024>"
+				},
+				//s2vencfg0
+				"s2vencfg0": {
+					"status": "\"disabled\""
+				},
+				//set sensor name and addr
+				"sensor0": {
+					"sensor0_mname": "\"gc2083_mipi\"",
+					"sensor0_twi_addr": "<0x6e>",
+					"status": "\"okay\""
+				},
+				"sensor1": {
+					"sensor1_mname": "\"gc2083_mipi_2\"",
+					"sensor1_twi_addr": "<0x7e>",
+					"status": "\"okay\""
+				}
+			}
+		},
+		// enable sensor complile
+		"kernel": [
+			"# CONFIG_SENSOR_GC1084_MIPI is not set",
+			"CONFIG_SENSOR_GC2083_MIPI=y",
+			"CONFIG_SENSOR_GC2083_ONE_LANE_MIPI=y",
+			"CONFIG_SENSOR_GC2083_SM_VSYNC_MODE=y",
+			"CONFIG_TDM_ONE_BUFFER=y",
+			"CONFIG_FRAMEDONE_TWO_BUFFER=y",
+			"CONFIG_TDM_ONE_BUFFER_WITH_TWORX=y"
+		],
+		// rtos sysconfig
+		"rtos_sysconfig": {
+			"vind": {
+				"csi_top": "240000000"
+			},
+			"vind/sensor0": {
+				"sensor0_mname": "\"gc2083_mipi\"",
+				"sensor0_sm_vs": "port:PA0<2><default><default><default>"
+			},
+			"vind/sensor1": {
+				"sensor1_mname": "\"gc2083_mipi_2\"",
+				"sensor1_twi_addr": "0x7e"
+			},
+			"vind/vinc0": {
+				"vinc0_mipi_num": "1"
+			},
+			"vind/vinc1": {
+				"vinc1_mipi_num": "1"
+			}
+		},
+		// rtos configs
+		"rtos": [
+			"CONFIG_ISP_READ_THRESHOLD=y",
+			"# CONFIG_SENSOR_GC1084_MIPI is not set",
+			"# CONFIG_SENSOR_GC1084_MIPI_USE_SAME_TWI is not set",
+			"CONFIG_SENSOR_GC2083_MIPI=y",
+			"CONFIG_SENSOR_GC2083_MIPI_USE_1LANE=y",
+			"CONFIG_SENSOR_GC2083_SM_VSYNC_MODE=y",
+			"CONFIG_TDM_RX_BUF_NUM=1",
+			"CONFIG_TDM_RX_BUF_NUM_WITH_TWORX=y"
+		]
+	}, //end of dual_gc2083_sensor_smvs
+	/*****************************one_gc1084_sensor(2in1)************************************/
+	"one_gc1084_sensor_(2in1)": {
+		"desc": "Set one camera of gc1084 online for this board (2in1 mode)",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_sys_config",
+			"default_dual_sensor_config"
+		],
+		"board.dts": {
+			"set_property": {
+				"rv_ddr_reserved": {
+					"reg": "<0x0 0x81000000 0x0 0x440000>"
+				},
+				"rv_vdev0buffer": {
+					"reg": "<0x0 0x81440000 0x0 0x40000>"
+				},
+				"rv_vdev0vring0": {
+					"reg": "<0x0 0x81480000 0x0 0x2000>"
+				},
+				"e907_mem_fw": {
+					"reg": "<0x0 0x81484000 0x0 0x0025B000>"
+				},
+				"e907_share_irq_table": {
+					"reg": "<0x0 0x816EE000 0x0 0x2000>"
+				},
+				"e907_rpbuf_reserved": {
+					"reg": "<0x0 0x816F0000 0x0 0x40000>"
+				},
+				"isp_dram_reserved": {
+					"reg": "<0x0 0x81730000 0x0 0x008d0000>"
+				},
+				"e907_rproc": {
+					"fw-partition-sectors": "<4864>"
+				},
+				"tdm0": {
+					"work_mode": "<0x1>"
+				},
+				"isp00": {
+					"work_mode": "<0x1>"
+				},
+				"isp01": {
+					"status": "\"okay\"",
+					"rpbuf": "<&rpbuf_controller0>",
+					"rpmsg-ser-name": "\"43030000.e907_rproc\""
+				},
+				"scaler00": {
+					"work_mode": "<0x1>"
+				},
+				"scaler01": {
+					"rpmsg-ser-name": "\"43030000.e907_rproc\"",
+					"status": "\"okay\""
+				},
+				"scaler10": {
+					"work_mode": "<0x1>"
+				},
+				"scaler11": {
+					"rpmsg-ser-name": "\"43030000.e907_rproc\"",
+					"status": "\"okay\""
+				},
+				"vinc00": {
+					"work_mode": "<0x1>"
+				},
+				"vinc01": {
+					"vinc1_csi_sel": "<0>",
+					"vinc1_mipi_sel": "<0>",
+					"rpmsg-ser-name": "\"43030000.e907_rproc\"",
+					"delay_init": "<1>",
+					"status": "\"okay\""
+				},
+				"vinc10": {
+					"work_mode": "<0x1>"
+				},
+				"vinc11": {
+					"vinc5_csi_sel": "<0>",
+					"vinc5_mipi_sel": "<0>",
+					"rpmsg-ser-name": "\"43030000.e907_rproc\"",
+					"delay_init": "<1>",
+					"status": "\"okay\""
+				}
+			}
+		},
+		"kernel": [
+			"CONFIG_SUPPORT_ISP_TDM=y",
+			"CONFIG_VIN_SENSOR_RESERVE_ADDR=0x81FFE000"
+		],
+		"partition_nor": [
+			{
+				"name": "riscv0",
+				"size": "4864"
+			}
+		],
+		"partition": [
+			{
+				"name": "riscv0",
+				"size": "4864"
+			}
+		],
+		// rtos configs
+		"rtos_sysconfig": {
+			"vind/vinc0": {
+				"vinc0_tdm_rx_sel": "0",
+				"vinc0_width": "320",
+				"vinc0_height": "240",
+				"vinc0_merge_width": "1280",
+				"vinc0_merge_height": "720",
+				"vinc0_work_mode": "1"
+			},
+			"vind/vinc1": {
+				"vinc1_used": "1",
+				"vinc1_isp_sel": "1",
+				"vinc1_tdm_rx_sel": "1",
+				"vinc1_width": "320",
+				"vinc1_height": "240",
+				"vinc1_merge_width": "1280",
+				"vinc1_merge_height": "720",
+				"vinc1_use_sensor_list": "0",
+				"vinc1_mipi_num": "1"
+			}
+		},
+		// rtos configs
+		"rtos": [
+			"CONFIG_ARCH_MEM_LENGTH=0x440000",
+			"CONFIG_ISP_NUMBER=2",
+			"CONFIG_TDM_RX_BUF_NUM=1",
+			"CONFIG_VIN_WAIT_AMP_INIT_SEM_TIMEOUT=4000",
+			"CONFIG_ISP_MEMRESERVE_ADDR=0x81730000",
+			"CONFIG_ISP_MEMRESERVE_LEN=0x8d0000",
+			"CONFIG_RTOS_FW_RESERVED_MEM_ADDR=0x81484000"
+		]
+	}, //end of one_gc1084_sensor(2in1)
+	/*****************************one_gc05a2_sensor(2in1)************************************/
+	"one_gc05a2_sensor_(2in1)": {
+		"desc": "Set one camera of gc05a2 offline for this board (2in1 mode)",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_sys_config",
+			"default_dual_sensor_config"
+		],
+		"board.dts": {
+			"set_property": {
+				"rv_ddr_reserved": {
+					"reg": "<0x0 0x81000000 0x0 0x440000>"
+				},
+				"rv_vdev0buffer": {
+					"reg": "<0x0 0x81440000 0x0 0x40000>"
+				},
+				"rv_vdev0vring0": {
+					"reg": "<0x0 0x81480000 0x0 0x2000>"
+				},
+				"e907_mem_fw": {
+					"reg": "<0x0 0x81484000 0x0 0x0025B000>"
+				},
+				"e907_share_irq_table": {
+					"reg": "<0x0 0x816EE000 0x0 0x2000>"
+				},
+				"e907_rpbuf_reserved": {
+					"reg": "<0x0 0x816F0000 0x0 0x40000>"
+				},
+				"isp_dram_reserved": {
+					"reg": "<0x0 0x81730000 0x0 0x008d0000>"
+				},
+				"e907_rproc": {
+					"fw-partition-sectors": "<4864>"
+				},
+				"tdm0": {
+					"work_mode": "<0x1>"
+				},
+				"vind0": {
+					"csi_top": "<240000000>"
+				},
+				"isp00": {
+					"work_mode": "<0x1>"
+				},
+				"isp01": {
+					"status": "\"okay\"",
+					"rpbuf": "<&rpbuf_controller0>",
+					"rpmsg-ser-name": "\"43030000.e907_rproc\""
+				},
+				"scaler00": {
+					"work_mode": "<0x1>"
+				},
+				"scaler01": {
+					"rpmsg-ser-name": "\"43030000.e907_rproc\"",
+					"status": "\"okay\""
+				},
+				"scaler10": {
+					"work_mode": "<0x1>"
+				},
+				"scaler11": {
+					"rpmsg-ser-name": "\"43030000.e907_rproc\"",
+					"status": "\"okay\""
+				},
+				"sensor0": {
+					"sensor0_mname": "\"gc05a2_mipi\"",
+					"sensor0_twi_addr": "<0x6f>",
+					"sensor0_reset": "<&pio PA 0 GPIO_ACTIVE_LOW>",
+					"status": "\"okay\""
+				},
+				"vinc00": {
+					"work_mode": "<0x1>"
+				},
+				"vinc01": {
+					"vinc1_csi_sel": "<0>",
+					"vinc1_mipi_sel": "<0>",
+					"rpmsg-ser-name": "\"43030000.e907_rproc\"",
+					"delay_init": "<1>",
+					"status": "\"okay\""
+				},
+				"vinc10": {
+					"work_mode": "<0x1>"
+				},
+				"vinc11": {
+					"vinc5_csi_sel": "<0>",
+					"vinc5_mipi_sel": "<0>",
+					"rpmsg-ser-name": "\"43030000.e907_rproc\"",
+					"delay_init": "<1>",
+					"status": "\"okay\""
+				}
+			}
+		},
+		"kernel": [
+			"CONFIG_SUPPORT_ISP_TDM=y",
+			"CONFIG_SENSOR_GC05A2_MIPI=y",
+			"# CONFIG_SENSOR_GC1084_MIPI is not set",
+			"CONFIG_VIN_SENSOR_RESERVE_ADDR=0x81FFE000"
+		],
+		"partition_nor": [
+			{
+				"name": "riscv0",
+				"size": "4480"
+			}
+		],
+		// rtos configs
+		"rtos_sysconfig": {
+			"vind": {
+				"csi_top": "240000000"
+			},
+			"vind/sensor0": {
+				"sensor0_mname": "\"gc05a2_mipi\"",
+				"sensor0_twi_addr": "0x6f",
+				"sensor0_reset": "port:PA0<1><0><1><0>"
+			},
+			"vind/vinc0": {
+				"vinc0_tdm_rx_sel": "0",
+				"vinc0_width": "320",
+				"vinc0_height": "240",
+				"vinc0_merge_width": "1280",
+				"vinc0_merge_height": "720",
+				"vinc0_work_mode": "1",
+				"vinc0_mipi_num": "2"
+			},
+			"vind/vinc1": {
+				"vinc1_used": "1",
+				"vinc1_isp_sel": "1",
+				"vinc1_tdm_rx_sel": "1",
+				"vinc1_width": "320",
+				"vinc1_height": "240",
+				"vinc1_merge_width": "1280",
+				"vinc1_merge_height": "720",
+				"vinc1_use_sensor_list": "0",
+				"vinc1_mipi_num": "2"
+			}
+		},
+		// rtos configs
+		"rtos": [
+			"CONFIG_ARCH_MEM_LENGTH=0x440000",
+			"CONFIG_ISP_NUMBER=2",
+			"CONFIG_TDM_RX_BUF_NUM=1",
+			"CONFIG_VIN_WAIT_AMP_INIT_SEM_TIMEOUT=4000",
+			"CONFIG_ISP_MEMRESERVE_ADDR=0x81730000",
+			"CONFIG_ISP_MEMRESERVE_LEN=0x8d0000",
+			"CONFIG_RTOS_FW_RESERVED_MEM_ADDR=0x81484000"
+		]
+	}, //end of one_gc05a2_sensor
+	/*****************************one_gc4663_sensor************************************/
+	"one_gc4663_sensor(2in1)": {
+		"desc": "set one camare of gc4663 2in1 mode for this board",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_sys_config",
+			"default_dual_sensor_config"
+		],
+		"board.dts": {
+			"set_property": {
+				"size_pool": {
+					"reg": "<0 0x82000000 0 0x01e80000>"
+				},
+				"linux,cma": {
+					"size": "<0x0 0x400000>"
+				},
+				"heap_size_pool@0": {
+					"heap-size": "<0x01e80000>",
+					"thrs": "<150>",
+					"sizes": "<0 31232>"
+				},
+				//csi
+				"csi1": {
+					"pinctrl-0": "<&ncsi_bt656_pins_a>",
+					"pinctrl-1": "<&ncsi_bt656_pins_b>",
+					"status": "\"disabled\""
+				},
+				//tdm
+				"tdm0": {
+					"work_mode": "<0x1>"
+				},
+				//isp
+				"isp00": {
+					"work_mode": "<0x1>"
+				},
+				"isp01": {
+					"status": "\"okay\"",
+					"rpbuf": "<&rpbuf_controller0>",
+					"rpmsg-ser-name": "\"43030000.e907_rproc\""
+				},
+				"isp10": {
+					"status": "\"disabled\""
+				},
+				"vind0": {
+					"csi_top": "<200000000>"
+				},
+				"actuator0": {
+					"status": "\"disabled\""
+				},
+				"s0vencfg0": {
+					"status": "\"disabled\""
+				},
+				//set sensor name and addr
+				"sensor0": {
+					"sensor0_mname": "\"gc4663_mipi\"",
+					"sensor0_twi_addr": "<0x52>",
+					"status": "\"okay\""
+				},
+				"sensor1": {
+					"status": "\"disabled\""
+				},
+				"scaler00": {
+					"rpmsg-ser-name": "\"43030000.e907_rproc\"",
+					"work_mode": "<0x1>"
+				},
+				"scaler01": {
+					"rpmsg-ser-name": "\"43030000.e907_rproc\"",
+					"status": "\"okay\""
+				},
+				"scaler10": {
+					"rpmsg-ser-name": "\"43030000.e907_rproc\"",
+					"work_mode": "<0x1>"
+				},
+				"scaler11": {
+					"rpmsg-ser-name": "\"43030000.e907_rproc\"",
+					"status": "\"okay\""
+				},
+				"vinc00": {
+					"delay_init": "<1>",
+					"rpmsg-ser-name": "\"43030000.e907_rproc\"",
+					"work_mode": "<0x1>"
+				},
+				"vinc01": {
+					"vinc1_csi_sel": "<0>",
+					"vinc1_mipi_sel": "<0>",
+					"vinc1_isp_sel": "<1>",
+					"vinc1_tdm_rx_sel": "<1>",
+					"vinc1_rear_sensor_sel": "<0>",
+					"vinc1_front_sensor_sel": "<0>",
+					"rpmsg-ser-name": "\"43030000.e907_rproc\"",
+					"delay_init": "<1>",
+					"status": "\"okay\""
+				},
+				"vinc10": {
+					"delay_init": "<1>",
+					"rpmsg-ser-name": "\"43030000.e907_rproc\"",
+					"work_mode": "<0x1>",
+					"status": "\"okay\""
+				},
+				"vinc11": {
+					"vinc5_csi_sel": "<0>",
+					"vinc5_mipi_sel": "<0>",
+					"vinc5_rear_sensor_sel": "<0>",
+					"vinc5_front_sensor_sel": "<0>",
+					"rpmsg-ser-name": "\"43030000.e907_rproc\"",
+					"delay_init": "<1>",
+					"status": "\"okay\""
+				}
+			}
+		},
+		"partition_nor": [
+			{
+				"name": "riscv0",
+				"size": "4864"
+			}
+		],
+		"partition": [
+			{
+				"name": "riscv0",
+				"size": "4864"
+			}
+		],
+		// rtos sysconfig
+		"rtos_sysconfig": {
+			"vind/sensor0": {
+				"sensor0_mname": "\"gc4663_mipi\"",
+				"sensor0_twi_addr": "\"0x52\""
+			},
+			"vind/sensor1": {
+				"sensor1_used": "0"
+			},
+			"vind/vinc0": {
+				"vinc0_mipi_num": "2",
+				"vinc0_csi_sel": "0",
+				"vinc0_merge_width": "1280",
+				"vinc0_merge_height": "720",
+				"vinc0_use_sensor_list": "0",
+				"vinc0_large_image": "1"
+			},
+			"vind/vinc1": {
+				"vinc1_mipi_num": "2",
+				"vinc1_csi_sel": "0",
+				"vinc1_mipi_sel": "0",
+				"vinc1_isp_sel": "1",
+				"vinc1_tdm_rx_sel": "1",
+				"vinc1_rear_sensor_sel": "0",
+				"vinc1_front_sensor_sel": "0",
+				"vinc1_merge_width": "1280",
+				"vinc1_merge_height": "720",
+				"vinc1_use_sensor_list": "0",
+				"vinc1_large_image": "1"
+			}
+		},
+		// rtos configs
+		"rtos": [
+			"CONFIG_ARCH_MEM_LENGTH=0x440000",
+			"CONFIG_ISP_NUMBER=2",
+			"CONFIG_ISP_READ_THRESHOLD=y",
+			"# CONFIG_SENSOR_GC1084_MIPI is not set",
+			"# CONFIG_SENSOR_GC1084_MIPI_USE_SAME_TWI is not set",
+			"CONFIG_SENSOR_GC4663_MIPI=y",
+			"CONFIG_TDM_RX_BUF_NUM=1",
+			"CONFIG_CLI_UART_PORT=2"
+		],
+		"kernel": [ //enable sensor complile
+			"CONFIG_SUPPORT_ISP_TDM=y",
+			"CONFIG_SENSOR_GC4663_MIPI=y",
+			"CONFIG_TDM_ONE_BUFFER=y",
+			"CONFIG_FRAMEDONE_TWO_BUFFER=y",
+			"# CONFIG_RT_MEDIA_DUAL_SENSOR is not set",
+			"# CONFIG_RT_MEDIA_SETUP_RECORDER_IN_KERNEL is not set",
+			"# CONFIG_SENSOR_GC1084_MIPI is not set"
+		]
+	} //end of one_gc4663_sensor(2in1)
+}

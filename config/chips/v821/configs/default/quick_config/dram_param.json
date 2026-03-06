@@ -1,0 +1,29 @@
+{
+	"dram_param_set_ddr2_refresh_rate_7.8us": {
+		"desc": "Set dram param ddr2 refresh rate 7.8us, Tj <= 85°C",
+		"tag": "storage",
+		"sysconfig": {
+			"dram_para": {
+				"dram_tpr4": "0x0"
+			}
+		}
+	},
+	"dram_param_set_ddr2_refresh_rate_3.9us": {
+		"desc": "Set dram param ddr2 refresh rate 3.9us, 85°C < Tj <= 95°C",
+		"tag": "storage",
+		"sysconfig": {
+			"dram_para": {
+				"dram_tpr4": "0x1000"
+			}
+		}
+	},
+	"dram_param_set_ddr2_refresh_rate_1.95us": {
+		"desc": "Set dram param ddr2 refresh rate 1.95us, 95°C < Tj <= 125°C",
+		"tag": "storage",
+		"sysconfig": {
+			"dram_para": {
+				"dram_tpr4": "0x2000"
+			}
+		}
+	}
+}

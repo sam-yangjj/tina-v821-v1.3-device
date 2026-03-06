@@ -1,0 +1,414 @@
+{
+	/* rtos flash_read driver */
+	"disable_rtos_read_drv": {
+		"desc": "disable rtos flash_read[spif] drivers",
+		"tag": "bootboost",
+		"rtos": [
+			"# CONFIG_COMPONENTS_AW_FLASH_READ is not set"
+		]
+	},
+	"enable_rtos_spinor_read_drv": {
+		"desc": "enable rtos flash_read[spif] drivers",
+		"tag": "bootboost",
+		"rtos": [
+			"CONFIG_PM_LOAD_STORAGE_TYPE_SPINOR=y",
+			"CONFIG_COMPONENTS_AW_FLASH_READ=y",
+			"CONFIG_COMPONENTS_AW_FLASH_READ_SPINOR=y",
+			"# CONFIG_COMPONENTS_AW_FLASH_READ_EMMC is not set",
+			"CONFIG_COMPONENTS_AW_FLASH_GPT_OFFSET=608",
+			"CONFIG_COMPONENTS_AW_FLASH_BOOTPKG_OFFSET=280"
+		]
+	},
+	"enable_rtos_emmc_read_drv": {
+		"desc": "enable rtos flash_read[emmc] drivers",
+		"tag": "bootboost",
+		"rtos": [
+			"CONFIG_PM_LOAD_STORAGE_TYPE_MMC=y",
+			"CONFIG_COMPONENTS_AW_FLASH_READ=y",
+			"# CONFIG_COMPONENTS_AW_FLASH_READ_SPINOR is not set",
+			"CONFIG_COMPONENTS_AW_FLASH_READ_EMMC=y",
+			"CONFIG_COMPONENTS_AW_FLASH_GPT_OFFSET=40960"
+		]
+	},
+	"disable_base_parallel_ramdisk": {
+		"desc": "disable base parallel ramdisk",
+		"tag": "bootboost",
+		"depends": [
+			"disable_rtos_read_drv"
+		],
+		"kernel": [
+			"# CONFIG_BLK_DEV_INITRD is not set",
+			"# CONFIG_AW_PARALLEL_RAMDISK is not set"
+		],
+		"rtos": [
+			"# CONFIG_PRELOAD_RAMDISK is not set",
+			"# CONFIG_WAIT_SPIF_CONTROLLER is not set"
+		]
+	},
+	"disable_spif_parallel_ramdisk": {
+		"desc": "disable spif parallel ramdisk",
+		"tag": "bootboost",
+		"depends": [
+			"disable_base_parallel_ramdisk"
+		],
+		"board.dts": {
+			"del_property": {
+				"spif0": {
+					"deferred-device": null
+				}
+			}
+		},
+		"kernel": [
+			"# CONFIG_AW_SPIF_DELAYINIT is not set"
+		],
+		"partition_nor": [
+			{
+				"name": "ramdisk",
+				"del": true
+			}
+		]
+	},
+	"disable_emmc_parallel_ramdisk": {
+		"desc": "disable emmc parallel ramdisk",
+		"tag": "bootboost",
+		"depends": [
+			"disable_base_parallel_ramdisk"
+		],
+		"board.dts": {
+			"del_property": {
+				"sdc0": {
+					"deferred-device": null
+				}
+			}
+		},
+		"kernel": [
+			"# CONFIG_AW_MMC_DELAYINIT is not set"
+		],
+		"partition_nor": [
+			{
+				"name": "ramdisk",
+				"del": true
+			}
+		]
+	},
+	"enable_base_parallel_ramdisk": {
+		"desc": "enable base parallel ramdisk",
+		"tag": "bootboost",
+		"board.dts": {
+			"set_property": {
+				"chosen": {
+					"linux,initrd-start": "<0x83800000>",
+					"linux,initrd-end": "<0x84000000>"
+				}
+			},
+			"bootargs": {
+				"rdinit": "/rdinit"
+			}
+		},
+		"kernel": [
+			"CONFIG_BLK_DEV_INITRD=y",
+			"# CONFIG_RD_GZIP is not set",
+			"# CONFIG_RD_BZIP2 is not set",
+			"# CONFIG_RD_LZMA is not set",
+			"# CONFIG_RD_XZ is not set",
+			"# CONFIG_RD_LZO is not set",
+			"# CONFIG_RD_LZ4 is not set",
+			"CONFIG_AW_PARALLEL_RAMDISK=y"
+		],
+		"rtos": [
+			"CONFIG_AW_ROOTFS_READAHEAD=y",
+			"CONFIG_PRELOAD_RAMDISK=y",
+			"CONFIG_COMPONENTS_COMPRESS=y",
+			"CONFIG_PRELOAD_RAMDISK=y",
+			"CONFIG_RAMDISK_LOADADDR=0x83e00000",
+			"CONFIG_RAMDISK_PARTITION_SIZE=0x200000",
+			"CONFIG_RAMDISK_DECOMPRESS_ADDR=0x83800000",
+			"CONFIG_RAMDISK_DECOMPRESS_SIZE=0x600000",
+			"CONFIG_WAIT_SPIF_CONTROLLER=y"
+		]
+	},
+	"enable_spif_parallel_ramdisk": {
+		"desc": "enable spif parallel ramdisk",
+		"tag": "bootboost",
+		"depends": [
+			"disable_emmc_parallel_ramdisk",
+			"enable_rtos_spinor_read_drv",
+			"enable_base_parallel_ramdisk"
+		],
+		"board.dts": {
+			"set_property": {
+				"spif0": {
+					"deferred-device": null
+				}
+			}
+		},
+		"kernel": [
+			"CONFIG_AW_SPIF_DELAYINIT=y"
+		],
+		"rtos": [
+			"CONFIG_COMPONENTS_COMPRESS_LZ4=y"
+		],
+		"partition_nor": [
+			{
+				"name": "rootfs_data"
+			},
+			{
+				"name": "ramdisk",
+				"size": "4096",
+				"user_type": "0x8000",
+				"downloadfile": "\"initramfs_lz4.fex\""
+			}
+		]
+	},
+	"enable_emmc_parallel_ramdisk": {
+		"desc": "enable emmc parallel ramdisk",
+		"tag": "bootboost",
+		"depends": [
+			"disable_spif_parallel_ramdisk",
+			"enable_rtos_emmc_read_drv",
+			"enable_base_parallel_ramdisk"
+		],
+		"board.dts": {
+			"set_property": {
+				"sdc0": {
+					"deferred-device": null
+				}
+			}
+		},
+		"kernel": [
+			"CONFIG_AW_MMC_DELAYINIT=y"
+		],
+		"rtos": [
+			"CONFIG_COMPONENTS_COMPRESS_LZ4=y"
+		],
+		"partition": [
+			{
+				"name": "rootfs_data"
+			},
+			{
+				"name": "ramdisk",
+				"size": "4096",
+				"user_type": "0x8000",
+				"downloadfile": "\"initramfs_lz4.fex\""
+			}
+		]
+	},
+	"disable_base_rootfs_readahead": {
+		"desc": "disable base rootfs readahead",
+		"tag": "bootboost",
+		"board.dts": {
+			"del_property": {
+				"chosen": {
+					"linux,initrd-start": null,
+					"linux,initrd-end": null
+				}
+			}
+		},
+		"kernel": [
+			"# CONFIG_AW_ROOTFS_READAHEAD is not set"
+		],
+		"rtos": [
+			"# CONFIG_COMPONENTS_COMPRESS is not set",
+			"# CONFIG_COMPONENTS_SQUASHFS is not set",
+			"# CONFIG_COMPONENTS_SQUASHFS_CMD is not set",
+			"# CONFIG_PRELOAD_RAMDISK is not set",
+			"# CONFIG_PRELOAD_ROOTFS is not set",
+			"# CONFIG_WAIT_SPIF_CONTROLLER is not set"
+		]
+	},
+	"disable_spif_rootfs_readahead": {
+		"desc": "disable spif rootfs readahead",
+		"tag": "bootboost",
+		"depends": [
+			"disable_rtos_read_drv",
+			"disable_base_rootfs_readahead"
+		],
+		"board.dts": {
+			"del_property": {
+				"spif0": {
+					"deferred-device": null
+				}
+			}
+		},
+		"kernel": [
+			"# CONFIG_AW_SPIF_DELAYINIT is not set"
+		],
+		"rtos": [
+			"# CONFIG_COMPONENTS_COMPRESS is not set"
+		]
+	},
+	"disable_emmc_rootfs_readahead": {
+		"desc": "disable emmc rootfs readahead",
+		"tag": "bootboost",
+		"depends": [
+			"disable_rtos_read_drv",
+			"disable_base_rootfs_readahead"
+		],
+		"board.dts": {
+			"del_property": {
+				"sdc0": {
+					"deferred-device": null
+				}
+			}
+		},
+		"kernel": [
+			"# CONFIG_AW_MMC_DELAYINIT is not set"
+		],
+		"rtos": [
+			"# CONFIG_COMPONENTS_COMPRESS is not set"
+		]
+	},
+	"enable_base_rootfs_readahead": {
+		"desc": "enable base rootfs readahead",
+		"tag": "bootboost",
+		"board.dts": {
+			"set_property": {
+				"chosen": {
+					"linux,initrd-start": "<0x83c00000>",
+					"linux,initrd-end": "<0x84000000>"
+				}
+			}
+		},
+		"kernel": [
+			"# CONFIG_BLK_DEV_INITRD is not set",
+			"# CONFIG_AW_PARALLEL_RAMDISK is not set",
+			"CONFIG_AW_ROOTFS_READAHEAD=y"
+		],
+		"rtos": [
+			"CONFIG_WAIT_SPIF_CONTROLLER=y",
+			"CONFIG_COMPONENTS_SQUASHFS=y",
+			"# CONFIG_COMPONENTS_SQUASHFS_CMD is not set",
+			"# CONFIG_PRELOAD_RAMDISK is not set",
+			"CONFIG_PRELOAD_ROOTFS=y",
+			"CONFIG_ROOTFS_LOADADDR=0x83c00000",
+			"CONFIG_ROOTFS_PARTITION_SIZE=0x400000",
+			"CONFIG_ROOTFS_LOAD_FILES=\"lib/libc.so lib/libstdc++.so.6.0.28 lib/librt_media.so lib/libawion.so lib/libgcc_s.so.1 bin/busybox bin/demo_video_in etc/ld-musl-riscv32.path files/init\""
+		]
+	},
+	"enable_spif_rootfs_readahead": {
+		"desc": "enable spif rootfs readahead",
+		"tag": "bootboost",
+		"depends": [
+			"disable_emmc_rootfs_readahead",
+			"enable_rtos_spinor_read_drv",
+			"enable_base_rootfs_readahead"
+		],
+		"board.dts": {
+			"del_property": {
+				"spif0": {
+					"deferred-device": null
+				}
+			}
+		},
+		"kernel": [
+			"CONFIG_AW_SPIF_DELAYINIT=y"
+		],
+		"rtos": [
+			"CONFIG_COMPONENTS_COMPRESS=y",
+			"# CONFIG_COMPONENTS_COMPRESS_LZ4 is not set",
+			"CONFIG_COMPONENTS_COMPRESS_LZO=y"
+		]
+	},
+	"enable_emmc_rootfs_readahead": {
+		"desc": "enable emmc rootfs readahead",
+		"tag": "bootboost",
+		"depends": [
+			"disable_spif_rootfs_readahead",
+			"enable_rtos_emmc_read_drv",
+			"enable_base_rootfs_readahead"
+		],
+		"board.dts": {
+			"set_property": {
+				"sdc0": {
+					"deferred-device": null
+				}
+			}
+		},
+		"kernel": [
+			"CONFIG_AW_MMC_DELAYINIT=y"
+		],
+		"rtos": [
+			"CONFIG_COMPONENTS_COMPRESS=y",
+			"# CONFIG_COMPONENTS_COMPRESS_LZ4 is not set",
+			"CONFIG_COMPONENTS_COMPRESS_LZO=y"
+		]
+	},
+	"open_rtos_uart_console": {
+		"desc": "Open RTOS UART for RTOS debug",
+		"tag": "debug",
+		"depends": [
+			"open_boot0_uart_print",
+			"open_linux_uart_print"
+		],
+		"rtos": [
+			"# CONFIG_DISABLE_ALL_UART_LOG is not set",
+			"CONFIG_MULTI_CONSOLE=y",
+			"CONFIG_UART_MULTI_CONSOLE=y",
+			"CONFIG_UART_MULTI_CONSOLE_AS_MAIN=y"
+		]
+	},
+	"enable_isp_iq_file_load_base": {
+		"desc": "(internal) Enable isp iq file load function for iq tunning",
+		"internal": true,
+		"board.dts": {
+			"add_node": [
+				{
+					"path": "/",
+					"name": "isp_iq_file@0",
+					"add_tail": 1
+				}
+			],
+			"set_property": {
+				"isp_iq_file@0": {
+					"compatible": "\"allwinner,isp-iq-file\"",
+					"partition_name": "\"/dev/mtd9\"",
+					"partition_size": "<128>",
+					"status": "\"okay\""
+				}
+			}
+		},
+		"kernel": [
+			"CONFIG_AW_ISP_PARAM_IQ_FILE=y"
+		],
+		"partition_nor": [
+			{
+				"name": "isp_param"
+			},
+			{
+				"name": "isp_iq_bin",
+				"size": "256",
+				"user_type": "0x8000"
+			}
+		],
+		"partition": [
+			{
+				"name": "isp_param"
+			},
+			{
+				"name": "isp_iq_bin",
+				"size": "256",
+				"user_type": "0x8000"
+			}
+		]
+	},
+	"aov_demo": {
+		"desc": "enable aov demo.",
+		"tag": "mpp",
+		"openwrt": [
+			"CONFIG_rt_media-mpp_demo_aov=y"
+		],
+		"kernel": [
+			"CONFIG_RESUME_SENSOR_IN_SRAM=y"
+		],
+		"rtos": [
+			"CONFIG_RESUME_SENSOR_IN_SRAM=y"
+		],
+		"board.dts": {
+			"set_property": {
+				"sdc0": {
+					"skip-unnecessary-rescan": null
+				}
+			}
+		}
+	}
+}

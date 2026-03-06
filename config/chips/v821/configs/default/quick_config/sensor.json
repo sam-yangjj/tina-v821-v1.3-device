@@ -1,0 +1,1084 @@
+{
+	"default_sensor_sys_config": {
+		"desc": "set one camera of gc1084 sys config for this board",
+		"tag": "camera",
+		"kernel": [
+			"CONFIG_SENSOR_GC1084_MIPI=m",
+			"# CONFIG_SUPPORT_ISP_TDM is not set",
+			"# CONFIG_BT656 is not set",
+			"# CONFIG_TDM_ONE_BUFFER is not set",
+			"# CONFIG_SENSOR_GC2083_MIPI is not set",
+			"# CONFIG_SENSOR_SC2336_MIPI is not set",
+			"# CONFIG_SENSOR_SC3336_MIPI is not set",
+			"# CONFIG_SENSOR_GC4663_MIPI is not set",
+			"# CONFIG_SENSOR_F37P_MIPI is not set",
+			"# CONFIG_SENSOR_GC1084_MIPI_USE_SAME_TWI is not set",
+			"# CONFIG_SENSOR_NVP6158C is not set",
+			"# CONFIG_FRAMEDONE_TWO_BUFFER is not set",
+			"# CONFIG_ACTUATOR is not set",
+			"# CONFIG_ACTUATOR_DW9714 is not set",
+			"# CONFIG_SENSOR_F37P is not set",
+			"# CONFIG_SENSOR_IMX258 is not set",
+			"# CONFIG_SENSOR_OS02G10_DVP is not set",
+			"# CONFIG_SOFTWARE_TDM_FOR_ISP is not set",
+			"# CONFIG_SENSOR_IMX386_2LANE is not set"
+		],
+		//cp vin driver and sensor to rootfs; see moudule.mk ;load ko see S00mpp
+		"openwrt": [
+			"CONFIG_PACKAGE_kmod-sunxi-vin=y",
+			"CONFIG_PACKAGE_kmod-sensor-gc1084=y",
+			"# CONFIG_mpp_software_tdm_for_isp is not set",
+			"CONFIG_gc1084=y",
+			"# CONFIG_imx258 is not set",
+			"# CONFIG_gc2053 is not set",
+			"# CONFIG_gc2083 is not set",
+			"# CONFIG_gc4663 is not set",
+			"# CONFIG_f37p is not set",
+			"# CONFIG_sc2336 is not set",
+			"# CONFIG_sc3336 is not set",
+			"# CONFIG_sc200ai is not set",
+			"# CONFIG_sc530ai is not set",
+			"# CONFIG_bf2257cs is not set",
+			"# CONFIG_imx386 is not set",
+			"# CONFIG_PACKAGE_kmod-sensor-gc2083 is not set",
+			"# CONFIG_PACKAGE_kmod-sensor-gc4663 is not set",
+			"# CONFIG_PACKAGE_kmod-sensor-imx258 is not set",
+			"# CONFIG_PACKAGE_kmod-sensor-nvp6158c is not set",
+			"# CONFIG_PACKAGE_kmod-sensor-sc2336 is not set",
+			"# CONFIG_PACKAGE_kmod-sensor-sc3336 is not set",
+			"# CONFIG_PACKAGE_kmod-sensor-sc530ai is not set",
+			"# CONFIG_PACKAGE_kmod-actuator-dw9714 is not set",
+			"# CONFIG_PACKAGE_kmod-sensor-imx386 is not set"
+		]
+	},
+	/*****************************one_gc1084_sensor************************************/
+	"one_gc1084_sensor": {
+		"desc": "set one camera of gc1084 online for this board",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_config",
+			"default_sensor_sys_config"
+		]
+	},
+	/*****************************one_gc2083_sensor************************************/
+	"one_gc2083_sensor": {
+		"desc": "set one camera of gc2083 online for this board",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_config",
+			"default_sensor_sys_config"
+		],
+		"board.dts": {
+			"set_property": {
+				//set sensor name and addr
+				"sensor0": {
+					"sensor0_mname": "\"gc2083_mipi\"",
+					"sensor0_twi_addr": "<0x6e>",
+					"status": "\"okay\""
+				}
+			}
+		},
+		//enable sensor complile
+		"kernel": [
+			"CONFIG_SENSOR_GC2083_MIPI=m",
+			"# CONFIG_SENSOR_GC1084_MIPI is not set"
+		],
+		//cp vin driver and sensor to rootfs; see moudule.mk ;load ko see S00mpp
+		"openwrt": [
+			"CONFIG_PACKAGE_kmod-sunxi-vin=y",
+			"CONFIG_PACKAGE_kmod-sensor-gc2083=y",
+			"CONFIG_gc2083=y",
+			"# CONFIG_PACKAGE_kmod-sensor-gc1084 is not set",
+			"# CONFIG_gc1084 is not set"
+		]
+	}, //end of one_gc2083_sensor
+	/*****************************one_gc2083_sensor(cdr)************************************/
+	"one_gc2083_sensor(cdr)": {
+		"desc": "set one camera of gc2083 online for CDR scenario",
+		"tag": "camera",
+		"depends": [
+			"one_gc2083_sensor"
+		],
+		"board.dts": {
+			"set_property": {
+				//mem pool
+				"size_pool": {
+					"reg": "<0 0x82000000 0 0x01c00000>"
+				},
+				"heap_size_pool@0": {
+					"heap-size": "<0x01c00000>",
+					"sizes": "<0 28672>"
+				}
+			}
+		}
+	}, //end of one_gc2083_sensor(cdr)
+	/*****************************one_sc2336_sensor************************************/
+	"one_sc2336_sensor": {
+		"desc": "set one camera of sc2336 online for this board",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_config",
+			"default_sensor_sys_config"
+		],
+		"board.dts": {
+			"set_property": {
+				"sensor0": {
+					"sensor0_mname": "\"sc2336_mipi\"",
+					"sensor0_twi_addr": "<0x60>",
+					"status": "\"okay\""
+				}
+			}
+		},
+		//enable sensor complile
+		"kernel": [
+			"CONFIG_SENSOR_SC2336_MIPI=m",
+			"# CONFIG_SENSOR_GC1084_MIPI is not set"
+		],
+		//cp vin driver and sensor to rootfs; see moudule.mk ;load ko see S00mpp
+		"openwrt": [
+			"CONFIG_PACKAGE_kmod-sensor-sc2336=y",
+			"CONFIG_sc2336=y",
+			"# CONFIG_PACKAGE_kmod-sensor-gc1084 is not set",
+			"# CONFIG_gc1084 is not set"
+		]
+	}, //end of one_sc2336_sensor
+	/*****************************one_nvp6158c_sensor************************************/
+	"one_nvp6158c_sensor": {
+		"desc": "set nvp6158c 2H for this board",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_config",
+			"default_sensor_sys_config"
+		],
+		"board.dts": {
+			"set_property": {
+				//spi1
+				"spi1": {
+					"status": "\"disabled\""
+				},
+				//gmac0
+				"gmac0": {
+					"status": "\"disabled\""
+				},
+				//pio
+				"csi_mclk1_pins_a": {
+					"pins": "\"PD2\"",
+					"function": "\"ncsi\""
+				},
+				"csi_mclk1_pins_b": {
+					"pins": "\"PD2\""
+				},
+				//csi1
+				"csi1": {
+					"status": "\"okay\""
+				},
+				//
+				//isp10
+				"isp10": {
+					"status": "\"okay\""
+				},
+				//set sensor name and addr
+				"sensor0": {
+					"sensor0_mname": "\"nvp6158\"",
+					"sensor0_twi_addr": "<0x64>",
+					"sensor0_mclk_id": "<1>",
+					"sensor0_isp_used": "<0>",
+					"sensor0_fmt": "<0>",
+					"sensor0_reset": "<&pio PD 17 GPIO_ACTIVE_LOW>",
+					"status": "\"okay\""
+				},
+				//set /dev/video0/4
+				"vinc00": {
+					"vinc0_csi_sel": "<1>",
+					"vinc0_mipi_sel": "<0xff>",
+					"vinc0_isp_sel": "<4>",
+					"vinc0_tdm_rx_sel": "<0xff>",
+					"status": "\"okay\""
+				},
+				"vinc10": {
+					"vinc4_csi_sel": "<1>",
+					"vinc4_mipi_sel": "<0xff>",
+					"vinc4_isp_sel": "<4>",
+					"vinc4_isp_tx_ch": "<1>",
+					"status": "\"okay\""
+				}
+			}
+		},
+		//enable sensor complile
+		"kernel": [
+			"# CONFIG_SENSOR_GC1084_MIPI is not set",
+			"CONFIG_SENSOR_NVP6158C=m",
+			"CONFIG_BT656=y"
+		],
+		//cp vin driver and sensor to rootfs; see moudule.mk ;load ko see S00mpp
+		"openwrt": [
+			"CONFIG_PACKAGE_kmod-sensor-nvp6158c=y",
+			"# CONFIG_PACKAGE_kmod-sensor-gc1084 is not set",
+			"# CONFIG_gc1084 is not set"
+		]
+	}, //end of one_nvp6158c_sensor
+	/*****************************one_sc3336_sensor************************************/
+	"one_sc3336_sensor(2in1)": {
+		"desc": "set one camera of sc3336 2in1 mode for this board",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_config",
+			"default_sensor_sys_config"
+		],
+		"board.dts": {
+			"set_property": {
+				//mem pool
+				"size_pool": {
+					"reg": "<0 0x82000000 0 0x01900000>"
+				},
+				"linux,cma": {
+					"size": "<0x0 0x100000>"
+				},
+				"heap_size_pool@0": {
+					"heap-size": "<0x01900000>",
+					"thrs": "<0>",
+					"sizes": "<0 25600>"
+				},
+				//tdm
+				"tdm0": {
+					"work_mode": "<0x1>"
+				},
+				//isp
+				"isp00": {
+					"work_mode": "<0x1>"
+				},
+				"isp01": {
+					"status": "\"okay\""
+				},
+				//scaler
+				"scaler00": {
+					"work_mode": "<0x1>"
+				},
+				"scaler01": {
+					"status": "\"okay\""
+				},
+				"scaler10": {
+					"work_mode": "<0x1>",
+					"status": "\"okay\""
+				},
+				"scaler11": {
+					"status": "\"okay\""
+				},
+				//set sensor name and addr
+				"sensor0": {
+					"sensor0_mname": "\"sc3336_mipi\"",
+					"sensor0_twi_addr": "<0x60>",
+					"status": "\"okay\""
+				},
+				//set /dev/video0/1/4/5
+				"vinc00": {
+					"work_mode": "<0x1>",
+					"status": "\"okay\""
+				},
+				"vinc01": {
+					"vinc1_csi_sel": "<0>",
+					"vinc1_mipi_sel": "<0>",
+					"status": "\"okay\""
+				},
+				"vinc10": {
+					"work_mode": "<0x1>",
+					"status": "\"okay\""
+				},
+				"vinc11": {
+					"vinc5_csi_sel": "<0>",
+					"vinc5_mipi_sel": "<0>",
+					"status": "\"okay\""
+				}
+			}
+		},
+		"kernel": [ //enable sensor complile
+			"CONFIG_SUPPORT_ISP_TDM=y",
+			"CONFIG_SENSOR_SC3336_MIPI=m",
+			"CONFIG_TDM_ONE_BUFFER=y",
+			"CONFIG_FRAMEDONE_TWO_BUFFER=y",
+			"# CONFIG_SENSOR_GC1084_MIPI is not set"
+		],
+		//cp vin driver and sensor to rootfs; see moudule.mk ;load ko see S00mpp
+		"openwrt": [
+			"CONFIG_PACKAGE_kmod-sunxi-vin=y",
+			"CONFIG_PACKAGE_kmod-sensor-sc3336=y",
+			"CONFIG_sc3336=y",
+			"# CONFIG_PACKAGE_kmod-sensor-gc1084 is not set",
+			"# CONFIG_gc1084 is not set"
+		]
+	}, //end of one_sc3336_sensor(2in1)
+	/*****************************one_gc4663_sensor************************************/
+	"one_gc4663_sensor(2in1)": {
+		"desc": "set one camera of gc4663 2in1 mode for this board",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_config",
+			"default_sensor_sys_config"
+		],
+		"board.dts": {
+			"set_property": {
+				//mem pool
+				"size_pool": {
+					"reg": "<0 0x82000000 0 0x01b00000>"
+				},
+				"linux,cma": {
+					"size": "<0x0 0x400000>"
+				},
+				"heap_size_pool@0": {
+					"heap-size": "<0x01b00000>",
+					"thrs": "<150>",
+					"sizes": "<0 27648>"
+				},
+				//tdm
+				"tdm0": {
+					"work_mode": "<0x1>"
+				},
+				//isp
+				"isp00": {
+					"work_mode": "<0x1>"
+				},
+				"isp01": {
+					"status": "\"okay\""
+				},
+				//scaler
+				"scaler00": {
+					"work_mode": "<0x1>"
+				},
+				"scaler01": {
+					"status": "\"okay\""
+				},
+				"scaler10": {
+					"work_mode": "<0x1>",
+					"status": "\"okay\""
+				},
+				"scaler11": {
+					"status": "\"okay\""
+				},
+				"vind0": {
+					"csi_top": "<300000000>"
+				},
+				//set sensor name and addr
+				"sensor0": {
+					"sensor0_mname": "\"gc4663_mipi\"",
+					"sensor0_twi_addr": "<0x52>",
+					"status": "\"okay\""
+				},
+				//set /dev/video0/1/4/5
+				"vinc00": {
+					"work_mode": "<0x1>",
+					"status": "\"okay\""
+				},
+				"vinc01": {
+					"vinc1_csi_sel": "<0>",
+					"vinc1_mipi_sel": "<0>",
+					"status": "\"okay\""
+				},
+				"vinc10": {
+					"work_mode": "<0x1>",
+					"status": "\"okay\""
+				},
+				"vinc11": {
+					"vinc5_csi_sel": "<0>",
+					"vinc5_mipi_sel": "<0>",
+					"status": "\"okay\""
+				}
+			}
+		},
+		"kernel": [ //enable sensor complile
+			"CONFIG_SUPPORT_ISP_TDM=y",
+			"CONFIG_SENSOR_GC4663_MIPI=m",
+			"CONFIG_TDM_ONE_BUFFER=y",
+			"CONFIG_TDM_USE_BK_BUFFER=y",
+			"CONFIG_FRAMEDONE_TWO_BUFFER=y",
+			"# CONFIG_SENSOR_GC1084_MIPI is not set"
+		],
+		//cp vin driver and sensor to rootfs; see moudule.mk ;load ko see S00mpp
+		"openwrt": [
+			"CONFIG_PACKAGE_kmod-sensor-gc4663=y",
+			"CONFIG_gc4663=y",
+			"# CONFIG_PACKAGE_kmod-sensor-gc1084 is not set",
+			"# CONFIG_gc1084 is not set"
+		],
+		"sysconfig": {
+			"dram_para": {
+				"dram_clk": 667
+			}
+		}
+	}, //end of one_gc4663_sensor(2in1)
+/*****************************one_sc530ai_sensor************************************/
+	"one_sc530ai_sensor(2in1)": {
+		"desc": "set one camera of sc530ai 2in1 mode for this board",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_config",
+			"default_sensor_sys_config"
+		],
+		"board.dts": {
+			"set_property": {
+				//mem pool
+				"size_pool": {
+					"reg": "<0 0x82000000 0 0x01c00000>"
+				},
+				"linux,cma": {
+					"size": "<0x0 0x400000>"
+				},
+				"heap_size_pool@0": {
+					"heap-size": "<0x01c00000>",
+					"thrs": "<150>",
+					"sizes": "<0 28672>"
+				},
+				//tdm
+				"tdm0": {
+					"work_mode": "<0x1>"
+				},
+				//isp
+				"isp00": {
+					"work_mode": "<0x1>"
+				},
+				"isp01": {
+					"status": "\"okay\""
+				},
+				//scaler
+				"scaler00": {
+					"work_mode": "<0x1>"
+				},
+				"scaler01": {
+					"status": "\"okay\""
+				},
+				"scaler10": {
+					"work_mode": "<0x1>",
+					"status": "\"okay\""
+				},
+				"scaler11": {
+					"status": "\"okay\""
+				},
+				"vind0": {
+					"csi_top": "<240000000>"
+				},
+				//set sensor name and addr
+				"sensor0": {
+					"sensor0_mname": "\"sc530ai_mipi\"",
+					"sensor0_twi_addr": "<0x60>",
+					"status": "\"okay\""
+				},
+				//set /dev/video0/1/4/5
+				"vinc00": {
+					"work_mode": "<0x1>",
+					"status": "\"okay\""
+				},
+				"vinc01": {
+					"vinc1_csi_sel": "<0>",
+					"vinc1_mipi_sel": "<0>",
+					"status": "\"okay\""
+				},
+				"vinc10": {
+					"work_mode": "<0x1>",
+					"status": "\"okay\""
+				},
+				"vinc11": {
+					"vinc5_csi_sel": "<0>",
+					"vinc5_mipi_sel": "<0>",
+					"status": "\"okay\""
+				}
+			}
+		},
+		"kernel": [ //enable sensor complile
+			"CONFIG_SUPPORT_ISP_TDM=y",
+			"CONFIG_SENSOR_SC530AI_MIPI=m",
+			"CONFIG_TDM_ONE_BUFFER=y",
+			"CONFIG_FRAMEDONE_TWO_BUFFER=y",
+			"# CONFIG_SENSOR_GC1084_MIPI is not set"
+		],
+		//cp vin driver and sensor to rootfs; see moudule.mk ;load ko see S00mpp
+		"openwrt": [
+			"CONFIG_PACKAGE_kmod-sensor-sc530ai=y",
+			"CONFIG_sc530ai=y",
+			"# CONFIG_PACKAGE_kmod-sensor-gc1084 is not set",
+			"# CONFIG_gc1084 is not set"
+		]
+	}, //end of one_sc530ai_sensor(2in1)
+	/*****************************one_f37p_sensor************************************/
+	"one_f37p_sensor": {
+		"desc": "set one camera of f37p online for this board",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_config",
+			"default_sensor_sys_config"
+		],
+		"board.dts": {
+			"set_property": {
+				"sensor0": {
+					"sensor0_mname": "\"f37p_mipi\"",
+					"sensor0_twi_addr": "<0x80>",
+					"status": "\"okay\""
+				}
+			}
+		},
+		//enable sensor complile
+		"kernel": [
+			"CONFIG_SENSOR_F37P=m",
+			"# CONFIG_SENSOR_GC1084_MIPI is not set"
+		],
+		//cp vin driver and sensor to rootfs; see moudule.mk ;load ko see S00mpp
+		"openwrt": [
+			"CONFIG_PACKAGE_kmod-sensor-f37p=y",
+			"CONFIG_f37p=y",
+			"# CONFIG_PACKAGE_kmod-sensor-gc1084 is not set",
+			"# CONFIG_gc1084 is not set"
+		]
+	}, //end of one_f37p_sensor
+	/*****************************one_imx258_sensor************************************/
+	"one_imx258(af)_sensor": {
+		"desc": "set one camera of imx258(af) online for this board",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_config",
+			"default_sensor_sys_config"
+		],
+		"board.dts": {
+			"set_property": {
+				//set sensor name and addr
+				"vind0": {
+					"csi_top": "<240000000>"
+				},
+				"actuator0": {
+					"actuator0_name": "\"dw9714_act\"",
+					"status": "\"okay\""
+				},
+				"sensor0": {
+					"sensor0_mname": "\"imx258_mipi\"",
+					"act_handle": "<&actuator0>",
+					"sensor0_twi_addr": "<0x34>",
+					"status": "\"okay\""
+				}
+			}
+		},
+		//enable sensor and actuator dw9714 complile
+		"kernel": [
+			"CONFIG_ACTUATOR=m",
+			"CONFIG_ACTUATOR_DW9714=m",
+			"CONFIG_SENSOR_IMX258=m",
+			"# CONFIG_SENSOR_GC1084_MIPI is not set"
+		],
+		//cp vin driver actuator and sensor to rootfs; see moudule.mk ;load ko see S00mpp
+		"openwrt": [
+			"CONFIG_PACKAGE_kmod-sensor-imx258=y",
+			"CONFIG_PACKAGE_kmod-actuator-dw9714=y",
+			"CONFIG_imx258=y",
+			"# CONFIG_PACKAGE_kmod-sensor-gc1084 is not set",
+			"# CONFIG_gc1084 is not set"
+		]
+	}, //end of one_imx258_sensor
+	/*****************************one_gc2083_and_one_os02g10_sensor************************************/
+	"one_gc2083_and_one_os02g10_sensor": {
+		"desc": "set dual camera of gc2083 and os02g10 for this board, mipi and dvp",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_config",
+			"default_sensor_sys_config"
+		],
+		"board.dts": {
+			"set_property": {
+				//mem pool
+				"size_pool": {
+					"reg": "<0 0x82000000 0 0x01780000>"
+				},
+				"heap_size_pool@0": {
+					"heap-size": "<0x01780000>",
+					"thrs": "<100>",
+					"sizes": "<0 24064>"
+				},
+				//pio
+				"csi_mclk1_pins_a": {
+					"pins": "\"PD2\"",
+					"function": "\"ncsi\""
+				},
+				"csi_mclk1_pins_b": {
+					"pins": "\"PD2\""
+				},
+				"gmac0": {
+					"status": "\"disabled\""
+				},
+				//csi
+				//csi0 enable smvs mode
+				"csi0": {
+					"pinctrl-0": "<&csi_sm_vs_pin_default>",
+					"pinctrl-1": "<&csi_sm_vs_pin_sleep>"
+				},
+				"csi1": {
+					"pinctrl-0": "<&ncsi_bt656_pins_a>",
+					"pinctrl-1": "<&ncsi_bt656_pins_b>",
+					"status": "\"okay\""
+				},
+				//tdm
+				"tdm0": {
+					"work_mode": "<0x1>"
+				},
+				//isp
+				"isp00": {
+					"work_mode": "<0x1>"
+				},
+				"isp01": {
+					"status": "\"okay\"",
+					"ldci_select": "<0x0>"
+				},
+				"isp10": {
+					"status": "\"okay\""
+				},
+				//scaler
+				"scaler00": {
+					"work_mode": "<0x1>"
+				},
+				"scaler01": {
+					"status": "\"okay\""
+				},
+				"scaler10": {
+					"work_mode": "<0x1>",
+					"status": "\"okay\""
+				},
+				"scaler11": {
+					"status": "\"okay\""
+				},
+				"vind0": {
+					"csi_top": "<240000000>"
+				},
+				//set sensor name and addr
+				"sensor0": {
+					"sensor0_mname": "\"os02g10_dvp\"",
+					"sensor0_twi_addr": "<0x78>",
+					"sensor0_mclk_id": "<1>",
+					"sensor0_reset": "<&pio PD 17 GPIO_ACTIVE_LOW>",
+					"status": "\"okay\""
+				},
+				"sensor1": {
+					"sensor1_mname": "\"gc2083_mipi\"",
+					"sensor1_twi_addr": "<0x6e>",
+					"sensor1_mclk_id": "<0>",
+					"sensor1_reset": "<>",
+					"status": "\"okay\""
+				},
+				// set /dev/video0/1/4/5
+				"vinc00": {
+					"vinc0_csi_sel": "<1>",
+					"vinc0_mipi_sel": "<0xff>",
+					"work_mode": "<0x1>",
+					"status": "\"okay\""
+				},
+				"vinc01": {
+					"vinc1_csi_sel": "<0>",
+					"vinc1_mipi_sel": "<0>",
+					"vinc1_rear_sensor_sel": "<1>",
+					"vinc1_front_sensor_sel": "<1>",
+					"status": "\"okay\""
+				},
+				"vinc10": {
+					"vinc4_csi_sel": "<1>",
+					"vinc4_mipi_sel": "<0xff>",
+					"work_mode": "<0x1>",
+					"status": "\"okay\""
+				},
+				"vinc11": {
+					"vinc5_csi_sel": "<0>",
+					"vinc5_mipi_sel": "<0>",
+					"vinc5_rear_sensor_sel": "<1>",
+					"vinc5_front_sensor_sel": "<1>",
+					"status": "\"okay\""
+				}
+			}
+		},
+		"kernel": [
+			"# CONFIG_SENSOR_GC1084_MIPI is not set",
+			"CONFIG_SUPPORT_ISP_TDM=y",
+			"CONFIG_SENSOR_GC2083_MIPI=m",
+			"CONFIG_SENSOR_OS02G10_DVP=m",
+			"CONFIG_SENSOR_GC2083_ONE_LANE_MIPI=y",
+			"CONFIG_TDM_ONE_BUFFER=y",
+			"CONFIG_TDM_ONE_BUFFER_WITH_TWORX=y",
+			"CONFIG_FRAMEDONE_TWO_BUFFER=y"
+		],
+		//cp vin and sensor driver
+		"openwrt": [
+			"CONFIG_PACKAGE_kmod-sensor-gc2083=y",
+			"CONFIG_PACKAGE_kmod-sensor-os02g10=y",
+			"CONFIG_gc2083=y",
+			"CONFIG_os02g10=y"
+		]
+	}, //end of one_gc2083_and_one_os02g10_sensor
+	/*****************************dual_gc1084_sensor************************************/
+	"dual_gc1084_sensor": {
+		"desc": "set dual camera of gc1084 for this board",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_sys_config",
+			"default_dual_sensor_config"
+		]
+	}, //end of dual_gc1084_sensor
+	/*****************************dual_gc2083_sensor************************************/
+	"dual_gc2083_sensor": {
+		"desc": "set dual camera of gc2083 for this board, SensorA: 0x6e, SensorB: 0x7e",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_sys_config",
+			"default_dual_sensor_config"
+		],
+		"board.dts": {
+			"set_property": {
+				//mem pool
+				"size_pool": {
+					"reg": "<0 0x82000000 0 0x01780000>"
+				},
+				"heap_size_pool@0": {
+					"heap-size": "<0x01780000>",
+					"thrs": "<100>",
+					"sizes": "<0 24064>"
+				},
+				//csi
+				//csi0 enable smvs mode
+				"csi0": {
+					"pinctrl-0": "<&csi_sm_vs_pin_default>",
+					"pinctrl-1": "<&csi_sm_vs_pin_sleep>"
+				},
+				"vind0": {
+					"csi_top": "<240000000>"
+				},
+				//set sensor name and addr
+				"sensor0": {
+					"sensor0_mname": "\"gc2083_mipi\"",
+					"sensor0_twi_addr": "<0x6e>"
+				},
+				"sensor1": {
+					"sensor1_mname": "\"gc2083_mipi_2\""
+				}
+			}
+		},
+		"kernel": [
+			"CONFIG_SUPPORT_ISP_TDM=y",
+			"CONFIG_SENSOR_GC2083_MIPI=m",
+			"CONFIG_SENSOR_GC2083_ONE_LANE_MIPI=y",
+			"CONFIG_SENSOR_GC2083_SM_VSYNC_MODE=y",
+			"CONFIG_TDM_ONE_BUFFER=y",
+			"CONFIG_TDM_ONE_BUFFER_WITH_TWORX=y",
+			"CONFIG_FRAMEDONE_TWO_BUFFER=y",
+			"# CONFIG_SENSOR_GC1084_MIPI is not set"
+		],
+		//cp vin and sensor driver
+		"openwrt": [
+			"CONFIG_PACKAGE_kmod-sunxi-vin=y",
+			"CONFIG_PACKAGE_kmod-sensor-gc2083=y",
+			"CONFIG_gc2083=y",
+			"# CONFIG_PACKAGE_kmod-sensor-gc1084 is not set",
+			"# CONFIG_gc1084 is not set"
+		]
+	}, //end of dual_gc2083_sensor
+	/*****************************dual_gc2083_sensor(stitch_mode)************************************/
+	"dual_gc2083_sensor(stitch_mode)": {
+		"desc": "set dual camera of gc2083 for this board, SensorA: 0x6e, SensorB: 0x7e",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_sys_config",
+			"default_dual_sensor_config"
+		],
+		"board.dts": {
+			"set_property": {
+				//mem pool
+				"size_pool": {
+					"reg": "<0 0x82000000 0 0x01a80000>"
+				},
+				"linux,cma": {
+					"size": "<0x0 0x400000>"
+				},
+				"heap_size_pool@0": {
+					"heap-size": "<0x01a80000>",
+					"thrs": "<100>",
+					"sizes": "<0 27136>"
+				},
+				//csi0 enable smvs mode
+				"csi0": {
+					"pinctrl-0": "<&csi_sm_vs_pin_default>",
+					"pinctrl-1": "<&csi_sm_vs_pin_sleep>"
+				},
+				"vind0": {
+					"csi_top": "<240000000>"
+				},
+				//set sensor name and addr
+				"sensor0": {
+					"sensor0_mname": "\"gc2083_mipi\"",
+					"sensor0_twi_addr": "<0x6e>",
+					"status": "\"okay\""
+				},
+				"sensor1": {
+					"sensor1_mname": "\"gc2083_mipi_2\""
+				}
+			}
+		},
+		"kernel": [
+			"CONFIG_SUPPORT_ISP_TDM=y",
+			"CONFIG_SENSOR_GC2083_MIPI=m",
+			"CONFIG_SENSOR_GC2083_ONE_LANE_MIPI=y",
+			"CONFIG_TDM_ONE_BUFFER=y",
+			"CONFIG_FRAMEDONE_TWO_BUFFER=y",
+			"# CONFIG_SENSOR_GC1084_MIPI is not set"
+		],
+		//cp vin and sensor driver
+		"openwrt": [
+			"CONFIG_PACKAGE_kmod-sensor-gc2083=y",
+			"CONFIG_gc2083=y",
+			"# CONFIG_PACKAGE_kmod-sensor-gc1084 is not set",
+			"# CONFIG_gc1084 is not set"
+		]
+	}, //end of dual_gc2083_sensor(stitch_mode)
+	/*****************************three_gc2083_sensor(soft tdm_mode)************************************/
+	"three_gc2083_sensor(soft_tdm_mode)": {
+		"desc": "v821 set three camera of gc2083 for this board,only 720p SensorA: 0x1e, SensorB: 0x6e,SensorC: 0x7e",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_sys_config",
+			"default_dual_sensor_config"
+		],
+		"board.dts": {
+			"add_node": [
+				{
+					"path": "vind0/",
+					"name": "sensor2: sensor@5812020",
+					"add_tail": 1
+				}
+			],
+			"set_property": {
+				//mem pool
+				"size_pool": {
+					"reg": "<0 0x82000000 0 0x01780000>"
+				},
+				"linux,cma": {
+					"size": "<0x0 0x300000>"
+				},
+				"heap_size_pool@0": {
+					"heap-size": "<0x01780000>",
+					"thrs": "<100>",
+					"sizes": "<0 24064>"
+				},
+				"csi0": {
+					"pinctrl-0": "<>",
+					"pinctrl-1": "<>"
+				},
+				"vind0": {
+					"csi_top": "<240000000>"
+				},
+				//set sensor name and addr
+				"sensor0": {
+					"sensor0_mname": "\"gc2083_mipi\"",
+					"sensor0_twi_addr": "<0x1e>",
+					"status": "\"okay\""
+				},
+				"sensor1": {
+					"sensor1_mname": "\"gc2083_mipi_2\"",
+					"sensor1_twi_addr": "<0x6e>",
+					"sensor1_mipiswitch": "<&pio PC 15 GPIO_ACTIVE_LOW>",
+					"sensor1_vsync": "<&pio PA 0 GPIO_ACTIVE_HIGH>",
+					"status": "\"okay\""
+				},
+				"sensor2": {
+					"sensor2_mname": "\"gc2083_mipi_3\"",
+					"sensor2_twi_addr": "<0x7e>",
+					"sensor2_twi_cci_id": "<0>",
+					"sensor2_mclk_id": "<1>",
+					"sensor2_pos": "\"front\"",
+					"sensor2_isp_used": "<1>",
+					"sensor2_fmt": "<1>",
+					"sensor2_stby_mode": "<0>",
+					"sensor2_vflip": "<0>",
+					"sensor2_hflip": "<0>",
+					"sensor2_iovdd-supply": "<>",
+					"sensor2_iovdd_vol": "<>",
+					"sensor2_avdd-supply": "<>",
+					"sensor2_avdd_vol": "<>",
+					"sensor2_dvdd-supply": "<>",
+					"sensor2_dvdd_vol": "<>",
+					"sensor2_power_en": "<>",
+					"sensor2_reset": "<>",
+					"status": "\"okay\""
+				},
+				"sdc0": {
+					"data3-detect": null
+				}
+			},
+			"del_property": {
+				"sdc0": {
+					"cd-gpios": null
+				}
+			}
+		},
+		"kernel": [
+			"CONFIG_SUPPORT_ISP_TDM=y",
+			"CONFIG_SENSOR_GC2083_MIPI=m",
+			"CONFIG_SENSOR_GC2083_ONE_LANE_MIPI=y",
+			"CONFIG_SENSOR_GC2083_VSYNC_MODE=y",
+			"CONFIG_SOFTWARE_TDM_FOR_ISP=y",
+			"CONFIG_SENSOR_GC2083_MIPI_USE_SAME_TWI=y",
+			"CONFIG_SENSOR_NUM=3",
+			"# CONFIG_TDM_ONE_BUFFER is not set",
+			"# CONFIG_FRAMEDONE_TWO_BUFFER is not set",
+			"# CONFIG_SENSOR_GC1084_MIPI is not set"
+		],
+		//cp vin and sensor driver
+		"openwrt": [
+			"CONFIG_PACKAGE_kmod-sensor-gc2083=y",
+			"CONFIG_gc2083=y",
+			"CONFIG_mpp_software_tdm_for_isp=y",
+			"# CONFIG_PACKAGE_kmod-sensor-gc1084 is not set",
+			"# CONFIG_gc1084 is not set"
+		]
+	}, //end of three_gc2083_sensor(soft_tdm_mode)
+	/*****************************dual_sc2336_sensor************************************/
+	"dual_sc2336_sensor": {
+		"desc": "set dual camera of sc2336 for this board, SensorA: 0x60, SensorB: 0x64",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_sys_config",
+			"default_dual_sensor_config"
+		],
+		"board.dts": {
+			"set_property": {
+				//mem pool
+				"size_pool": {
+					"reg": "<0 0x82000000 0 0x01780000>"
+				},
+				"linux,cma": {
+					"size": "<0x0 0x400000>"
+				},
+				"heap_size_pool@0": {
+					"heap-size": "<0x01780000>",
+					"thrs": "<100>",
+					"sizes": "<0 24064>"
+				},
+				//csi0 enable smvs mode
+				"csi0": {
+					"pinctrl-0": "<&csi_sm_vs_pin_default>",
+					"pinctrl-1": "<&csi_sm_vs_pin_sleep>"
+				},
+				"vind0": {
+					"csi_top": "<240000000>"
+				},
+				//set sensor name and addr
+				"sensor0": {
+					"sensor0_mname": "\"sc2336_mipi\"",
+					"sensor0_twi_addr": "<0x60>"
+				},
+				"sensor1": {
+					"sensor1_mname": "\"sc2336_mipi_2\"",
+					"sensor1_twi_addr": "<0x64>"
+				}
+			}
+		},
+		"kernel": [
+			"CONFIG_SUPPORT_ISP_TDM=y",
+			"CONFIG_SENSOR_SC2336_MIPI=y",
+			"CONFIG_SENSOR_SC2336_ONE_LANE_MIPI=y",
+			"CONFIG_SENSOR_SC2336_SM_VSYNC_MODE=y",
+			"CONFIG_TDM_ONE_BUFFER=y",
+			"CONFIG_TDM_ONE_BUFFER_WITH_TWORX=y",
+			"CONFIG_FRAMEDONE_TWO_BUFFER=y",
+			"# CONFIG_SENSOR_GC1084_MIPI is not set"
+		],
+		//cp vin and sensor driver
+		"openwrt": [
+			"CONFIG_PACKAGE_kmod-sensor-sc2336=y",
+			"CONFIG_sc2336=y",
+			"# CONFIG_PACKAGE_kmod-sensor-gc1084 is not set",
+			"# CONFIG_gc1084 is not set"
+		]
+	}, //end of dual_sc2336_sensor
+	/*****************************one_imx258_sensor************************************/
+	"one_imx258_sensor": {
+		"desc": "set one camare of imx258(af) online for this board",
+		"tag": "camera",
+		"depends": [
+			"default_sensor_sys_config",
+			"default_dual_sensor_config"
+		],
+		"board.dts": {
+			"set_property": {
+				//csi
+				"csi1": {
+					"pinctrl-0": "<&ncsi_bt656_pins_a>",
+					"pinctrl-1": "<&ncsi_bt656_pins_b>",
+					"status": "\"disabled\""
+				},
+				//tdm
+				"tdm0": {
+					"work_mode": "<0x0>"
+				},
+				//isp
+				"isp00": {
+					"work_mode": "<0x0>"
+				},
+				"isp01": {
+					"status": "\"disabled\""
+				},
+				"isp10": {
+					"status": "\"disabled\""
+				},
+				//scaler
+				"scaler00": {
+					"work_mode": "<0x0>"
+				},
+				"scaler01": {
+					"status": "\"disabled\""
+				},
+				"scaler10": {
+					"work_mode": "<0x0>",
+					"status": "\"okay\""
+				},
+				"scaler11": {
+					"status": "\"disabled\""
+				},
+				//set sensor name and addr
+				"vind0": {
+					"csi_top": "<240000000>"
+				},
+				"actuator0": {
+					"actuator0_name": "\"dw9714_act\"",
+					"status": "\"okay\""
+				},
+				"sensor0": {
+					"sensor0_mname": "\"imx258_mipi\"",
+					"act_handle": "<&actuator0>",
+					"sensor0_twi_addr": "<0x34>",
+					"status": "\"okay\""
+				},
+				"sensor1": {
+					"status": "\"disabled\""
+				},
+				//set /dev/video0
+				"vinc00": {
+					"work_mode": "<0x0>",
+					"status": "\"okay\""
+				},
+				"vinc01": {
+					"vinc1_rear_sensor_sel": "<0>",
+					"vinc1_front_sensor_sel": "<0>",
+					"status": "\"disabled\""
+				},
+				"vinc11": {
+					"vinc5_rear_sensor_sel": "<0>",
+					"vinc5_front_sensor_sel": "<0>",
+					"status": "\"disabled\""
+				}
+			}
+		},
+		//enable sensor and actuator dw9714 complile
+		"kernel": [
+			"# CONFIG_SENSOR_GC1084_MIPI is not set",
+			"CONFIG_ACTUATOR=m",
+			"CONFIG_ACTUATOR_DW9714=m",
+			"CONFIG_SENSOR_IMX258=m"
+		],
+		//cp vin driver actuator and sensor to rootfs; see moudule.mk ;load ko see S00mpp
+		"openwrt": [
+			"CONFIG_PACKAGE_kmod-sensor-imx258=y",
+			"CONFIG_PACKAGE_kmod-actuator-dw9714=y",
+			"CONFIG_imx258=y",
+			"# CONFIG_PACKAGE_kmod-sensor-gc1084 is not set",
+			"# CONFIG_gc1084 is not set"
+		]
+	} //end of one_imx258_sensor
+}

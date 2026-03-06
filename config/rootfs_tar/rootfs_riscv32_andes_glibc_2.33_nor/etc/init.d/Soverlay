@@ -1,0 +1,41 @@
+MOUNT_OVERLAY=1
+
+mount_overlay() {
+	fgrep -sq overlay /proc/filesystems || {
+                /bin/echo "skip mount overlayfs as kernel not support"
+                return
+	}
+
+	fgrep -sq $1 /proc/mtd || {
+                /bin/echo "There is no $1 partition to overlay"
+                return
+	}
+
+	cat /proc/mtd | while read line
+	do
+	        if [ `echo ${line} | awk '{print $4}'` = "\"$1\"" ];then
+			number=`echo $line | awk '{print $1}' | sed 's/[^0-9]//g'`
+			overlay_part="mtdblock$number"
+			/bin/mount -t jffs2 /dev/$overlay_part /mnt
+			if [ $? -ne 0 ];then
+				/bin/echo "mount $overlay_part error, exit overlay"
+				return
+			fi
+		fi
+	done
+
+	if [ -z "$(mount | grep mnt)" ];then
+		return
+	fi
+
+	mkdir -p mnt/upper mnt/workdir mnt/merged
+	mount -n -t overlay overlayfs:overlay -o rw,noatime,lowerdir=/,upperdir=mnt/upper,workdir=mnt/workdir /mnt/merged
+
+	mount -n /tmp -o noatime,move /mnt/merged/tmp
+	mount -n /sys -o noatime,move /mnt/merged/sys
+	mount -n /dev -o noatime,move /mnt/merged/dev
+	mount -n /proc -o noatime,move /mnt/merged/proc
+	pivot_root /mnt/merged mnt/merged
+}
+
+[ x"$MOUNT_OVERLAY" = x"1" ] && mount_overlay rootfs_data

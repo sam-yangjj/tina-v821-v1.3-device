@@ -1,0 +1,408 @@
+/*
+* Allwinner Technology CO., Ltd. sun300iw1p1 soc board.
+*
+* soc board support.
+*/
+
+&platform {
+	eraseflag   = <1>;
+	next_work   = <3>;
+	debug_mode  = <1>;
+};
+
+&target {
+	boot_clock = <1008>;	/*CPU boot frequency, Unit: MHz*/
+	storage_type = <3>; /*boot medium, 0-nand, 1-card0, 2-card2, 3-nor, -1(defualt)auto scan*/
+	burn_key = <1>;		/*1:support burn key; 0:not support burn key*/
+};
+
+&power_sply {
+	axp_bus_num	= <0>;
+	battery_exist = <0>;
+};
+
+&sdc0_pins_a {
+	allwinner,pins = "PC0", "PC1", "PC2",
+			"PC3", "PC4", "PC5";
+	allwinner,function = "sdc0";
+	allwinner,muxsel = <2>;
+	allwinner,drive = <3>;
+	allwinner,pull = <1>;
+	pins = "PC0", "PC1", "PC2",
+		"PC3", "PC4", "PC5";
+	function = "sdc0";
+	drive-strength = <40>;
+	bias-pull-up;
+};
+
+&sdc0_pins_b {
+	pins = "PF0", "PF1", "PF2",
+		"PF3", "PF4", "PF5";
+	function = "sdc0";
+	drive-strength = <40>;
+	bias-pull-up;
+};
+
+&sdc0_pins_c {
+	pins = "PF0", "PF1", "PF2",
+		"PF3", "PF4", "PF5";
+	function = "gpio_in";
+};
+
+&sdc2_pins_a {
+	allwinner,pins = "PC2", "PC3", "PC4",
+			"PC5", "PC6", "PC7";
+	allwinner,function = "sdc2";
+	allwinner,muxsel = <3>;
+	allwinner,drive = <3>;
+	allwinner,pull = <1>;
+	pins = "PC2", "PC3", "PC4",
+		"PC5", "PC6", "PC7";
+	function = "sdc2";
+	drive-strength = <30>;
+	bias-pull-up;
+
+};
+
+&sdc2_pins_b {
+	pins = "PC2", "PC3", "PC4",
+		"PC5", "PC6", "PC7";
+	function = "gpio_in";
+};
+
+&card0_boot_para {  /* Avoid dtc compiling warnings. @TODO: Developer should modify this to the actual value */
+	/* reg = <0x0 0x2 0x0 0x0>;  [> Avoid dtc compiling warnings. @TODO: Developer should modify this to the actual value <] */
+	device_type = "card0_boot_para";
+	card_ctrl = <0x0>;
+	card_high_speed = <0x1>;
+	card_line = <0x4>;
+	pinctrl-0 = <&sdc0_pins_a>;
+	clk_type = "typ1";
+};
+
+&card2_boot_para {  /* Avoid dtc compiling warnings. @TODO: Developer should modify this to the actual value */
+	/* reg = <0x0 0x3 0x0 0x0>;  [> Avoid dtc compiling warnings. @TODO: Developer should modify this to the actual value <] */
+	device_type = "card2_boot_para";
+	card_ctrl = <0x2>;
+	card_high_speed = <0x1>;
+	card_line = <0x4>;
+	pinctrl-0 = <&sdc2_pins_a>;
+	sdc_ex_dly_used = <0x2>;
+	sdc_tm4_hs200_max_freq = <150>;
+	sdc_tm4_hs400_max_freq = <100>;
+};
+
+&gpio_bias {  /* Avoid dtc compiling warnings. @TODO: Developer should modify this to the actual value */
+	device_type = "gpio_bias";
+};
+
+&aliases {
+	spi0 = &spi0;
+	spif = &spif;
+};
+
+&pio{
+	spi0_pins_a: spi0@0 {
+		allwinner,pins = "PC8", "PC11";
+		allwinner,pname = "spi0_mosi", "spi0_miso";
+		allwinner,function = "spi0";
+		allwinner,muxsel = <3>;
+		allwinner,drive = <1>;
+		allwinner,pull = <0>;
+	};
+
+	spi0_pins_b: spi0@1 {
+		allwinner,pins = "PC10", "PC7", "PC6";
+		allwinner,pname = "spi0_cs0", "spi0_hold",
+				"spi0_wp";
+		allwinner,function = "spi0";
+		allwinner,muxsel = <3>;
+		allwinner,drive = <1>;
+		allwinner,pull = <1>;   // only CS should be pulled up
+	};
+
+	spi0_pins_c: spi0@2 {
+		allwinner,pins = "PC9";
+		allwinner,pname = "spi0_sclk";
+		allwinner,function = "spi0";
+		allwinner,muxsel = <3>;
+		allwinner,drive = <3>;
+		allwinner,pull = <0>;
+	};
+
+	spi0_pins_d: spi0@3 {
+		allwinner,pins = "PC6", "PC7", "PC8", "PC9",
+				"PC10", "PC11";
+		allwinner,function = "gpio_in";
+		allwinner,muxsel = <0xf>;
+		allwinner,drive = <1>;
+		allwinner,pull = <0>;
+	};
+
+	spif_pins_a: spif@0 {
+		allwinner,pins = "PC8", "PC9", "PC11";
+		allwinner,pname = "spif_mosi", "spif_clk", "spif_miso";
+		allwinner,function = "spif";
+		allwinner,muxsel = <2>;
+		allwinner,drive = <3>;
+		allwinner,pull = <0>;
+	};
+
+	spif_pins_b: spif@1 {
+		allwinner,pins = "PC6", "PC7", "PC10";
+		allwinner,pname = "spif_wp", "spif_hold", "spif_cs0";
+		allwinner,function = "spif";
+		allwinner,muxsel = <2>;
+		allwinner,drive = <3>;
+		allwinner,pull = <1>;   // only CS should be pulled up
+	};
+
+	spif_pins_c: spif@2 {
+		allwinner,pins = "PC6", "PC7", "PC8", "PC9", "PC10", "PC11";
+		allwinner,function = "gpio_in";
+		allwinner,muxsel = <0xf>;
+		allwinner,drive = <1>;
+		allwinner,pull = <0>;
+	};
+};
+
+&spi0 {
+	clock-frequency = <100000000>;
+	pinctrl-0 = <&spi0_pins_a &spi0_pins_b &spi0_pins_c>;
+	pinctrl-1 = <&spi0_pins_d>;
+	pinctrl-names = "default", "sleep";
+	spi_slave_mode = <0>;
+	spi_dbi_enable = <0>;
+	spi0_cs_number = <1>;
+	status = "disabled";
+
+	spi_board0 {
+		device_type = "spi_board0";
+		compatible = "spi-nor";
+		spi-max-frequency = <100000000>;
+		m25p,fast-read = <1>;
+		/*individual_lock;*/
+		reg = <0x0>;
+		spi-rx-bus-width=<0x04>;
+		spi-tx-bus-width=<0x04>;
+		status="disabled";
+	};
+
+	spi-nand@0 {
+		compatible = "spi-nand";
+		spi-max-frequency=<0x05F5E100>;
+		reg = <0x0>;
+		spi-rx-bus-width=<0x04>;
+		spi-tx-bus-width=<0x04>;
+		status="disabled";
+	};
+};
+
+&spif {
+	clock-frequency = <100000000>;
+	pinctrl-0 = <&spif_pins_a &spif_pins_b>;
+	pinctrl-1 = <&spif_pins_c>;
+	pinctrl-names = "default", "sleep";
+	/*spi-supply = <&reg_dcdc1>;*/
+	status = "disabled";
+
+	spif-nor {
+		device_type = "spi_board0";
+		compatible = "spi-nor";
+		spif-max-frequency = <100000000>;
+		m25p,fast-read = <1>;
+		/*individual_lock;*/
+		reg = <0x0>;
+		spif-rx-bus-width=<0x04>;
+		spif-tx-bus-width=<0x04>;
+		dtr_mode_enabled=<1>;	/* choose double edge trigger mode */
+		io_mode_enabled=<1>;	/* 1_x_x && x_x_x mode */
+		status="disabled";
+	};
+};
+
+&sunxi_flashmap {
+	/* Unit: Sector */
+	sdmmc_map {
+		logic_offset = <40960>;
+		boot_param_start = <24504>;
+		boot_param_size = <1>;
+		uboot_start = <32800>;
+		uboot_size = <4096>;
+		uboot_bak_start = <24576>;
+		uboot_bak_size = <4096>;
+		secure_storage_start = <12288>;
+		secure_storage_size = <512>;
+		tuning_data_start = <24512>;
+		tuning_data_size = <60>;
+		status = "okay";
+	};
+
+	nor_map {
+		/*Unit: Sector, 8M flash:16384, 16M flash:32768, 32M flash:65536*/
+		/* logic offset requires block size(64K) alignment - 32(mbr size) */
+		flash_size = <16384>;
+		logic_offset = <2016>;
+		secure_logic_offset = <2016>;
+		rtos_logic_offset = <2016>;
+		rtos_secure_logic_offset = <2016>;
+		boot_param_start = <120>;
+		boot_param_size = <8>;
+		uboot_start = <128>;
+		uboot_size = <1888>;
+		boot0_start = <0>;
+		status = "okay";
+	};
+};
+
+&pwm8_pin_a {
+	allwinner,pins = "PD18";
+	allwinner,function = "pwm_8";
+	allwinner,muxsel = <0x4>;
+	allwinner,drive = <10>;
+	allwinner,pull = <2>;
+};
+
+&pwm8_pin_b {
+	allwinner,pins = "PD18";
+	allwinner,function = "io_disabled";
+	allwinner,muxsel = <0xf>;
+	allwinner,drive = <3>;
+	allwinner,pull = <2>;
+};
+
+&pwm8 {
+	pinctrl-names = "active", "sleep";
+	pinctrl-0 = <&pwm8_pin_a>;
+	pinctrl-1 = <&pwm8_pin_b>;
+	status = "okay";
+};
+
+&pwm3_pin_a {
+        allwinner,pins = "PD13";
+        allwinner,function = "pwm_3";
+        allwinner,muxsel = <0x4>;
+        allwinner,drive = <10>;
+        allwinner,pull = <2>;
+};
+
+&pwm3_pin_b {
+        allwinner,pins = "PD13";
+        allwinner,function = "io_disabled";
+        allwinner,muxsel = <0xf>;
+        allwinner,drive = <3>;
+        allwinner,pull = <2>;
+};
+
+&pwm3 {
+        pinctrl-names = "active", "sleep";
+        pinctrl-0 = <&pwm3_pin_a>;
+        pinctrl-1 = <&pwm3_pin_b>;
+        status = "disabled";
+};
+
+/*----------------------------------------------------------------------------------
+disp init configuration
+
+disp_mode             (0:screen0<screen0,fb0>)
+screenx_output_type   (0:none; 1:lcd; 2:tv; 3:hdmi;5:vdpo)
+screenx_output_mode   (used for hdmi output, 0:480i 1:576i 2:480p 3:576p 4:720p50)
+					(5:720p60 6:1080i50 7:1080i60 8:1080p24 9:1080p50 10:1080p60)
+screenx_output_format (for hdmi, 0:RGB 1:yuv444 2:yuv422 3:yuv420)
+screenx_output_bits   (for hdmi, 0:8bit 1:10bit 2:12bit 2:16bit)
+screenx_output_eotf   (for hdmi, 0:reserve 4:SDR 16:HDR10 18:HLG)
+screenx_output_cs     (for hdmi, 0:undefined  257:BT709 260:BT601  263:BT2020)
+screenx_output_dvi_hdmi (for hdmi, 0:undefined 1:dvi mode 2:hdmi mode)
+screen0_output_range   (for hdmi, 0:default 1:full 2:limited)
+screen0_output_scan    (for hdmi, 0:no data 1:overscan 2:underscan)
+screen0_output_aspect_ratio  (for hdmi, 8-same as original picture 9-4:3 10-16:9 11-14:9)
+fbx format            (4:RGB655 5:RGB565 6:RGB556 7:ARGB1555 8:RGBA5551 9:RGB888 10:ARGB8888 12:ARGB4444)
+fbx pixel sequence    (0:ARGB 1:BGRA 2:ABGR 3:RGBA)
+fb0_scaler_mode_enable(scaler mode enable, used FE)
+fbx_width,fbx_height  (framebuffer horizontal/vertical pixels, fix to output resolution while equal 0)
+lcdx_backlight        (lcd init backlight,the range:[0,256],default:197
+lcdx_yy               (lcd init screen bright/contrast/saturation/hue, value:0~100, default:50/50/57/50)
+lcd0_contrast         (LCD contrast, 0~100)
+lcd0_saturation       (LCD saturation, 0~100)
+lcd0_hue              (LCD hue, 0~100)
+framebuffer software rotation setting:
+disp_rotation_used:   (0:disable; 1:enable,you must set fbX_width to lcd_y,
+set fbX_height to lcd_x)
+degreeX:              (X:screen index; 0:0 degree; 1:90 degree; 3:270 degree)
+degreeX_Y:            (X:screen index; Y:layer index 0~15; 0:0 degree; 1:90 degree; 3:270 degree)
+devX_output_type : config output type in bootGUI framework in UBOOT-2018.
+				(0:none; 1:lcd; 2:tv; 4:hdmi;)
+devX_output_mode : config output resolution(see include/video/sunxi_display2.h) of bootGUI framework in UBOOT-2018
+devX_screen_id   : config display index of bootGUI framework in UBOOT-2018
+devX_do_hpd      : whether do hpd detectation or not in UBOOT-2018
+chn_cfg_mode     : Hardware DE channel allocation config. 0:single display with 6
+				channel, 1:dual display with 4 channel in main display and 2 channel in second
+				display, 2:dual display with 3 channel in main display and 3 channel in second
+				in display.
+----------------------------------------------------------------------------------*/
+&disp {
+	disp_init_enable         = <1>;
+	disp_mode                = <0>;
+
+	dev0_output_type         = <1>;
+	screen0_to_lcd_index     = <0>;
+	dev0_output_mode         = <4>;
+	dev0_screen_id           = <0>;
+	dev0_do_hpd              = <0>;
+
+	fb0_format               = <0>;
+	fb0_width                = <0>;
+	fb0_height               = <0>;
+
+	chn_cfg_mode             = <1>;
+	disp_para_zone           = <1>;
+};
+
+&lcd0 {
+	lcd_used            = <1>;
+	lcd_driver_name     = "t27p06";
+
+	lcd_if              = <0>;
+	lcd_hv_if           = <8>;
+
+	lcd_x               = <320>;
+	lcd_y               = <240>;
+	lcd_width           = <108>;
+	lcd_height          = <64>;
+
+	lcd_dclk_freq       = <27>;
+	lcd_hbp             = <70>;
+	lcd_ht              = <1716>;
+	lcd_hspw            = <1>;
+	lcd_vbp             = <21>;
+	lcd_vt              = <263>;
+	lcd_vspw            = <1>;
+
+	lcd_backlight       = <50>;
+	lcd_pwm_used        = <1>;
+	lcd_pwm_ch          = <3>;
+	lcd_pwm_freq        = <50000>;
+	lcd_pwm_pol         = <0>;
+	lcd_pwm_max_limit   = <255>;
+	lcd_bright_curve_en = <1>;
+
+	lcd_frm             = <0>;
+	lcd_hv_clk_phase    = <1>;
+	lcd_hv_sync_polarity= <0>;
+	lcd_hv_srgb_seq     = <2>;
+	lcd_io_phase        = <0x0000>;
+	lcd_gamma_en        = <0>;
+	lcd_cmap_en         = <0>;
+	lcd_rb_swap         = <0>;
+
+	/* cs */
+	lcd_gpio_0          = <&pio PD 18 1 1 2 0>;//ID0 : direct(0:in 1:out)/pull(0:disable 1:up 2:down)/driver(0123)/level
+	/* sda */
+	lcd_gpio_1          = <&pio PD 19 1 1 2 0>;//ID0 : direct(0:in 1:out)/pull(0:disable 1:up 2:down)/driver(0123)/level
+	/* sck */
+	lcd_gpio_2          = <&pio PD 17 1 1 2 0>;//ID0 : direct(0:in 1:out)/pull(0:disable 1:up 2:down)/driver(0123)/level
+
+	pinctrl-0 = <&rgb8_pins_a>, <&rgb8_pins_ctl_a>;
+	pinctrl-1 = <&rgb8_pins_b>, <&rgb8_pins_ctl_b>;
+};
+

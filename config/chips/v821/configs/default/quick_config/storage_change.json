@@ -1,0 +1,225 @@
+{
+	/*****************************change_to_emmc************************************/
+	"change_to_emmc": {
+		"desc": "Set device storage to eMMC",
+		"tag": "storage",
+		"finish_note": [
+			"change flash to emmc successful.\n",
+			"Please use `source build/envsetup.sh` and `lunch`\n",
+			"to apply this setting"
+		],
+		"sysconfig": {
+			"target": {
+				"storage_type": 2
+			}
+		},
+		"board.dts": {
+			"set_property": {
+				"sdc0": {
+					"bus-width": "<4>",
+					"non-removable": null,
+					"cap-mmc-highspeed": null,
+					"mmc-bootpart-noacc": null,
+					"mmc-ddr-3_3v": null,
+					"no-sdio": null,
+					"sunxi-power-save-mode": null,
+					"sunxi-dis-signal-vol-sw": null,
+					"max-frequency": "<50000000>",
+					"ctl-spec-caps": "<0x8>",
+					"no-sd": null,
+					"status": "\"okay\""
+				}
+			},
+			"del_property": {
+				"sdc0": {
+					"cd-gpios": null,
+					"cap-sd-highspeed": null,
+					"cd-used-24M": null,
+					"no-mmc": null
+				}
+			}
+		},
+		"env": [
+			{
+				"name": "rootfstype",
+				"val": "squashfs",
+				"method": "add"
+			}
+		],
+		"partition": [
+			{
+				"name": "mbr",
+				"size": "64"
+			},
+			{
+				"name": "env",
+				"size": "512"
+			},
+			{
+				"name": "env-redund",
+				"size": "512"
+			}
+		],
+		"uboot-board.dts": {
+			"set_property": {
+				"target": {
+					"storage_type": "<1>"
+				}
+			}
+		},
+		"kernel": [
+			/*"lock_defconfig.fragment", "ftrace_defconfig.fragment",*/
+			"# CONFIG_AW_MTD is not set",
+			"# CONFIG_AW_MTD_SUNXI_PARTS is not set",
+			"# CONFIG_AW_MTD_SPI_NOR_5_4 is not set",
+			"# CONFIG_MTD_SPI_NOR_USE_4K_SECTORS is not set",
+			"# CONFIG_SPIF_SUNXI is not set",
+			"# CONFIG_AW_MTD_SPINAND is not set",
+			"# CONFIG_AW_SPI_NG is not set",
+			"#CONFIG_AW_SPI_NG_ATOMIC_XFER is not set",
+			"# CONFIG_AW_SPI_SLAVETEST is not set",
+			"# CONFIG_AW_SPI_CAMERATEST is not set",
+			"# CONFIG_SPI is not set",
+			"# CONFIG_MTD_UBI is not set",
+			"# CONFIG_JFFS2_FS is not set",
+			"# CONFIG_UBIFS_FS is not set",
+			"CONFIG_EXT4_FS=y"
+		],
+		"openwrt": [
+			"# CONFIG_PACKAGE_mtd-utils is not set",
+			"# CONFIG_SUNXI_SMALL_STORAGE_OTA is not set",
+			"CONFIG_PACKAGE_e2fsprogs=y"
+		],
+		"rtos": [
+			"# CONFIG_PM_LOAD_STORAGE_TYPE_SPINOR is not set",
+			"CONFIG_PM_LOAD_STORAGE_TYPE_MMC=y",
+			"# CONFIG_PM_LOAD_STORAGE_TYPE_SPINAND is not set",
+			"CONFIG_COMPONENTS_AW_FLASH_READ_EMMC=y",
+			"# CONFIG_COMPONENTS_AW_FLASH_READ_SPINOR is not set",
+			"# CONFIG_COMPONENTS_AW_FLASH_READ_SPINOR is not set",
+			"CONFIG_COMPONENTS_AW_FLASH_READ_EMMC=y",
+			"CONFIG_COMPONENTS_AW_FLASH_GPT_OFFSET=40960",
+			"CONFIG_COMPONENTS_AW_FLASH_BOOTPKG_OFFSET=32800"
+		]
+	}, // end of change_to_emmc
+	"change_to_sdcard": {
+		"desc": "Set device storage to SD Card",
+		"tag": "storage",
+		"depends": [
+			"change_to_emmc"
+		],
+		"sysconfig": {
+			"target": {
+				"storage_type": 0
+			}
+		},
+		"board.dts": {
+			"set_property": {
+				"sdc0": {
+					"no-mmc": null
+				}
+			},
+			"del_property": {
+				"sdc0": {
+					"no-sd": null
+				}
+			}
+		}
+	},
+	/*****************************nand************************************/
+	"change_to_nand_base": {
+		"desc": "(internal) Basic config for SPI NAND Device (Please use change_to_nand for NAND Device)",
+		"tag": "storage",
+		"internal": true,
+		"sysconfig": {
+			"target": {
+				"storage_type": 5
+			}
+		},
+		"uboot-board.dts": {
+			"set_property": {
+				"target": {
+					"storage_type": "<0>"
+				}
+			}
+		},
+		"env": [
+			{
+				"name": "nand_root",
+				"val": "/dev/ubiblock0_5",
+				"method": "add"
+			},
+			{
+				"name": "rootfstype",
+				"val": "squashfs",
+				"method": "add"
+			}
+		],
+		"partition": [
+			{
+				"name": "mbr",
+				"size": "248"
+			},
+			{
+				"name": "boot-resource",
+				"size": "992"
+			},
+			{
+				"name": "env",
+				"size": "496"
+			},
+			{
+				"name": "env-redund",
+				"size": "496"
+			},
+			{
+				"name": "boot",
+				"size": "10912"
+			},
+			{
+				"name": "rootfs",
+				"size": "11904"
+			},
+			{
+				"name": "rootfs_data",
+				"size": "10240",
+				"user_type": "0x8000"
+			}
+		],
+		"board.dts": {
+			"set_property": {
+				"spi0": {
+					"status": "\"okay\""
+				},
+				"spi-nand@0": {
+					"status": "\"okay\""
+				},
+				"spi_board@0": {
+					"status": "\"disabled\""
+				}
+			}
+		},
+		"kernel": [
+			"# CONFIG_AW_MTD_SPI_NOR_5_4 is not set",
+			"# CONFIG_SPIF_SUNXI is not set",
+			"# CONFIG_PSTORE is not set",
+			"CONFIG_MTD_UBI_BLOCK=y",
+			"CONFIG_MTD_UBI_BEB_LIMIT=40",
+			"CONFIG_MTD_BLOCK=y",
+			"CONFIG_AW_MTD_SPINAND=y",
+			"CONFIG_UBIFS_FS=y",
+			"CONFIG_UBIFS_FS_ADVANCED_COMPR=y",
+			"# CONFIG_UBIFS_FS_LZO is not set",
+			"# CONFIG_UBIFS_FS_ZLIB is not set",
+			"# CONFIG_UBIFS_FS_ZSTD is not set",
+			"# CONFIG_JFFS2_FS is not set"
+		],
+		"openwrt": [
+			"# CONFIG_SUNXI_SMALL_STORAGE_OTA is not set",
+			"CONFIG_PACKAGE_e2fsprogs=y",
+			"CONFIG_PACKAGE_mtd-utils=y",
+			"CONFIG_PACKAGE_mtd-utils-mkfs.ubifs=y",
+			"# CONFIG_USE_MKLIBS is not set"
+		]
+	} // end of nand
+}
